@@ -103,7 +103,6 @@ const eightBallArray = [
         "You may rely on it.",
         "Eat my shorts."
 ];
-
 client.on('message', msg => {
     if (msg.content === "!eightball") {
         const randomNumber = Math.floor(Math.random()* eightBallArray.length);
@@ -124,15 +123,13 @@ client.on('message', msg => {
         return;
     }
 })
-
 client.on('message', msg => {
     if (msg.content === "!randomBetweenThisNum") {
-        const theNumTheUserSent = 1;
+        const theNumTheUserSent = 4;
         const randomNumber = Math.floor(Math.random()* theNumTheUserSent);
-        msg.reply("Noice")
+        msg.reply("Work in progress " + randomNumber);
     }
 })
-
 client.on('message', msg => {
     const prefix = "!randomNumber";
     const args = msg.content.slice(prefix.length).trim().split(' ');
@@ -147,6 +144,21 @@ client.on('message', msg => {
     }
 });
 
+client.on('message', msg => {
+    const city = "lockport";
+    if (msg.content === "!weather") {
+        axios.get("http://api.openweathermap.org/data/2.5/weather?q=" + city + ",us&units=imperial&APPID=" + process.env.API_TOKEN_KEY)
+        .then((res) => {
+            console.log('RES:', res.data.weather[0].main)//test what JSON you get back and assess leave as just res first then manipulate that 
+            msg.reply("The temperature is " + res.data.main.temp + " degrees. The real feel is " + res.data.main.feels_like+  " degrees. The wind speed is " + res.data.wind.speed + "mph. The sky is " + res.data.weather[0].main.toLowerCase()+". Please, have a nice day.")//send to the channel 
+            
+        })
+        .catch((err) => {
+            console.error('ERR:', err)
+        })
+        return " "
+        }//in case its giving errors of blank messages here a blank to silence that 
+    })
 
 
 
