@@ -13,7 +13,7 @@ client.on('ready', () => {
 client.on('message', msg => {
     if (msg.content === "!help") {
         //msg.channel.send("not tagged")
-        msg.reply("I can do !advice, !senddog, !eightball, and !ping")
+        msg.reply('I can do !advice, !senddog, !eightball, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", and !ping')
         msg.react("👍")
     }
 })
@@ -124,42 +124,58 @@ client.on('message', msg => {
     }
 })
 client.on('message', msg => {
-    if (msg.content === "!randomBetweenThisNum") {
-        const theNumTheUserSent = 4;
-        const randomNumber = Math.floor(Math.random()* theNumTheUserSent);
-        msg.reply("Work in progress " + randomNumber);
+    if (msg.content === "!coinFlip") {
+        const coin = 2;
+        const randomNumber = Math.floor(Math.random()* coin);
+        if(randomNumber == 1){
+            msg.reply("Heads!" , {
+            files: [
+                "https://faculty.math.illinois.edu/~hildebr/fakerandomness/resources/heads.png"
+            ] 
+        });
+    }
+        else{
+            msg.reply("Tails!", {
+                files: [
+                    "https://random-ize.com/coin-flip/us-quarter/us-quarter-back.jpg"
+                ] 
+            });
+        }
     }
 })
 client.on('message', msg => {
-    const prefix = "!randomNumber";
-    const args = msg.content.slice(prefix.length).trim().split(' ');
+    if (msg.content.startsWith("!randomBetween")){
+    const args = msg.content.slice().trim().split(/ +/g);
     const command = args.shift().toLowerCase();
         
-    if(command === 'args'){
-        if(!args.length){
-            return msg.reply("no args")
-        }
+    const randomNumber = Math.floor(Math.random()* args[0]);
+        
     
-    msg.channel.send('Command name:  ${command} \nArguments: ${args}')
+    msg.channel.send("You randomed between "+args[0]+" and 0 to get "+ randomNumber);
     }
 });
 
 client.on('message', msg => {
-    const city = "lockport";
-    if (msg.content === "!weather") {
-        axios.get("http://api.openweathermap.org/data/2.5/weather?q=" + city + ",us&units=imperial&APPID=" + process.env.API_TOKEN_KEY)
-        .then((res) => {
-            console.log('RES:', res.data.weather[0].main)//test what JSON you get back and assess leave as just res first then manipulate that 
-            msg.reply("The temperature is " + res.data.main.temp + " degrees. The real feel is " + res.data.main.feels_like+  " degrees. The wind speed is " + res.data.wind.speed + "mph. The sky is " + res.data.weather[0].main.toLowerCase()+". Please, have a nice day.")//send to the channel 
-            
-        })
-        .catch((err) => {
-            console.error('ERR:', err)
-        })
-        return " "
-        }//in case its giving errors of blank messages here a blank to silence that 
-    })
+    if (msg.content.startsWith("!weather")){
+        const args = msg.content.slice().trim().split(/ +/g);
+        const theCommand = args.shift().toLowerCase();
+        //console.log(args[0]);
+        //console.log(theCommand);
+        //msg.channel.send(args[0] + "You selected ")
 
+        const city = args[0];
+            axios.get("http://api.openweathermap.org/data/2.5/weather?q=" + city + ",us&units=imperial&APPID=" + process.env.API_TOKEN_KEY)
+            .then((res) => { 
+                
+                //console.log('RES:', res.data.message[0].message)//test what JSON you get back and assess leave as just res first then manipulate that 
+                //msg.reply(res.data.message[0].message);
+                msg.reply("The temperature is " + res.data.main.temp + " degrees. The real feel is " + res.data.main.feels_like+  " degrees. The wind speed is " + res.data.wind.speed + "mph. The sky is " + res.data.weather[0].main.toLowerCase()+". Please, have a nice day.")//send to the channel   
+            })
+            .catch((err) => {
+                console.error('ERR:', err)
+            })
+    }
+})
 
 
 
