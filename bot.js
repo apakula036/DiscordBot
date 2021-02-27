@@ -13,7 +13,7 @@ client.on('ready', () => {
 client.on('message', msg => {
     if (msg.content === "!help") {
         //msg.channel.send("not tagged")
-        msg.reply('I can do !advice, !senddog, !eightball, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", and !ping')
+        msg.reply('I can do !advice, !senddog, !eightball, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !sports, and !ping')
         msg.react("👍")
     }
 })
@@ -133,8 +133,7 @@ client.on('message', msg => {
                 "https://faculty.math.illinois.edu/~hildebr/fakerandomness/resources/heads.png"
             ] 
         });
-    }
-        else{
+        } else{
             msg.reply("Tails!", {
                 files: [
                     "https://random-ize.com/coin-flip/us-quarter/us-quarter-back.jpg"
@@ -146,11 +145,8 @@ client.on('message', msg => {
 client.on('message', msg => {
     if (msg.content.startsWith("!randomBetween")){
     const args = msg.content.slice().trim().split(/ +/g);
-    const command = args.shift().toLowerCase();
-        
+    const command = args.shift().toLowerCase();   
     const randomNumber = Math.floor(Math.random()* args[0]);
-        
-    
     msg.channel.send("You randomed between "+args[0]+" and 0 to get "+ randomNumber);
     }
 });
@@ -159,26 +155,46 @@ client.on('message', msg => {
     if (msg.content.startsWith("!weather")){
         const args = msg.content.slice().trim().split(/ +/g);
         const theCommand = args.shift().toLowerCase();
-        //console.log(args[0]);
-        //console.log(theCommand);
-        //msg.channel.send(args[0] + "You selected ")
-
         const city = args[0];
             axios.get("http://api.openweathermap.org/data/2.5/weather?q=" + city + ",us&units=imperial&APPID=" + process.env.API_TOKEN_KEY)
             .then((res) => { 
-                
-                //console.log('RES:', res.data.message[0].message)//test what JSON you get back and assess leave as just res first then manipulate that 
-                //msg.reply(res.data.message[0].message);
-                msg.reply("The temperature is " + res.data.main.temp + " degrees. The real feel is " + res.data.main.feels_like+  " degrees. The wind speed is " + res.data.wind.speed + "mph. The sky is " + res.data.weather[0].main.toLowerCase()+". Please, have a nice day.")//send to the channel   
+                msg.reply("The temperature is " + res.data.main.temp + " degrees. The real feel is " + res.data.main.feels_like+  " degrees. The wind speed is " + res.data.wind.speed + "mph. The sky is " + res.data.weather[0].main.toLowerCase()+". Please, have a nice day.");   
             })
             .catch((err) => {
                 console.error('ERR:', err)
             })
     }
+    else if(msg.content === "!sports"){
+        axios.get("http://api.openweathermap.org/data/2.5/weather?q=lockport,us&units=imperial&APPID=" + process.env.API_TOKEN_KEY)
+        .then((res) => {  
+            if(res.data.wind.speed <= 3){
+                msg.reply("The wind today is almost nonexistant go outside! The temperature is " + res.data.main.temp + " degrees. The real feel is "
+                 + res.data.main.feels_like+  " degrees. The wind speed is " + res.data.wind.speed +
+                "mph. The sky is " + res.data.weather[0].main.toLowerCase()+". Tennis would be great today!");
+            } else if(res.data.wind.speed <=6 ){
+                msg.reply("The wind today is pretty slim get out there! The temperature is " + res.data.main.temp + " degrees. The real feel is "
+                 + res.data.main.feels_like+  " degrees. The wind speed is " + res.data.wind.speed +
+                "mph. The sky is " + res.data.weather[0].main.toLowerCase()+". Tennis would be pretty good today!");
+            } else if(res.data.wind.speed <= 9.5  ){
+                msg.reply("The wind today isnt looking bad, check the forecast for gusts and future developments could be great! The temperature is " + res.data.main.temp + " degrees. The real feel is "
+                 + res.data.main.feels_like+  " degrees. The wind speed is " + res.data.wind.speed +
+                "mph. The sky is " + res.data.weather[0].main.toLowerCase()+". Disc golf is going to be alright today especially behind some trees. Tennis is not looking good.");
+            } else if(res.data.wind.speed <= 15){
+                msg.reply("The wind today is kinda high I wouldnt reccomend sports unless its forecasted to die down. The temperature is " + res.data.main.temp + " degrees. The real feel is "
+                 + res.data.main.feels_like+  " degrees. The wind speed is " + res.data.wind.speed +
+                "mph. The sky is " + res.data.weather[0].main.toLowerCase()+". Sports today arent looking good.");
+            } else if(res.data.wind.speed <= 20){
+                msg.reply("The wind today is very high I wouldnt reccomend going out for sports. The temperature is " + res.data.main.temp + " degrees. The real feel is "
+                 + res.data.main.feels_like+  " degrees. The wind speed is " + res.data.wind.speed +
+                "mph. The sky is " + res.data.weather[0].main.toLowerCase()+". Prepare to get frustrated if you're heading out");
+            } else {msg.reply("The wind today is insane I highly wouldnt reccomend going out for sports. The temperature is " + res.data.main.temp + " degrees. The real feel is "
+                + res.data.main.feels_like+  " degrees. The wind speed is " + res.data.wind.speed +
+                "mph. The sky is " + res.data.weather[0].main.toLowerCase()+". Dont do it.")}
+        })
+        .catch((err) => {
+            console.error('ERR:', err)
+        })
+    } 
 })
-
-
-
 client.login(process.env.BOT_TOKEN)
-
 //npm run devStart
