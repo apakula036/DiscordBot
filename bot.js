@@ -191,6 +191,23 @@ client.on('message', msg => {
                 + res.data.main.feels_like+  " degrees. The wind speed is " + res.data.wind.speed +
                 "mph. The sky is " + res.data.weather[0].main.toLowerCase()+". Dont do it.")}
         })
+    }
+        else if(msg.content === "!temperatureSports"){
+            axios.get("http://api.openweathermap.org/data/2.5/weather?q=lockport,us&units=imperial&APPID=" + process.env.API_TOKEN_KEY)
+            .then((res) => {  
+                if(res.data.main.temp <= 45){
+                    msg.reply("The temperature outside is: " + res.data.main.temp + ", its pretty cold out I would stay in today and play some games");
+                } else if(res.data.main.temp <=55 ){
+                    msg.reply("The temperature outside is: " + res.data.main.temp + ", its not the warmest out right now I would go if you're desperate. ");
+                } else if(res.data.main.temp <= 60  ){
+                    msg.reply("The temperature outside is: " + res.data.main.temp + ", its a little chilly bring a sweater!");
+                } else if(res.data.main.temp <= 70){
+                    msg.reply("The temperature outside is: " + res.data.main.temp + ", its nice and warm get out there!");
+                } else if(res.data.main.temp == 75){
+                    msg.reply("The temperature outside is: " + res.data.main.temp + ", its perfect! ");
+                } else {
+                    msg.reply("The temperature outside is: " + res.data.main.temp + ", its pretty hot out, get out there! ")}
+            })
         .catch((err) => {
             console.error('ERR:', err)
         })
