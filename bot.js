@@ -1,13 +1,17 @@
-require("dotenv").config()
+require("dotenv").config();
 
 
-const Discord = require('discord.js')
-const client = new Discord.Client()
-const axios = require('axios')
-
+const Discord = require('discord.js');
+const client = new Discord.Client();
+const axios = require('axios');
+const date = new Date();
+const channelTwoID = process.env.GENERAL_TWOID;
+const channelOneID = process.env.GENERAL_ONEID;
 
 client.on('ready', () => {
-    console.log('Bot ready!!!')
+    client.channels.cache.get(channelTwoID).send('Im Ready!');
+    checkTimeFunc();
+    greetings();
 })
 
 client.on('message', msg => {
@@ -15,6 +19,7 @@ client.on('message', msg => {
         //msg.channel.send("not tagged")
         msg.reply('I can do !advice, !senddog, !eightball, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !sports, and !ping')
         msg.react("👍")
+
     }
 })
 
@@ -65,7 +70,6 @@ client.on('message', msg => {
 client.on('message', msg => {
     if (msg.content === "!advice") {
         msg.channel.send("Helpful bot says: " + giveAdvice())
-
     function giveAdvice(){
         axios.get("https://api.adviceslip.com/advice")//api of somewhere 
         .then((res) => {
@@ -150,7 +154,6 @@ client.on('message', msg => {
     msg.channel.send("You randomed between "+args[0]+" and 0 to get "+ randomNumber);
     }
 });
-
 client.on('message', msg => {
     if (msg.content.startsWith("!weather")){
         const args = msg.content.slice().trim().split(/ +/g);
@@ -211,7 +214,28 @@ client.on('message', msg => {
         .catch((err) => {
             console.error('ERR:', err)
         })
-    } 
+    }
+
 })
+function checkTimeFunc(){
+    if(date.getHours() == 17){
+        client.channels.cache.get(channelTwoID).send('Welcome home from work Andrew. I hope it went well.');
+    } else {
+        setTimeout(checkTimeFunc, 3600000); //one hour so it only checks once per hour triggering the function once only
+        console.log("Its "+ date.getHours() + ", lets check again later.")
+    }
+}
+function greetings(){
+    if(date.getHours() == 7) {
+        console.log("7am");
+        client.channels.cache.get(channelOneID).send('Good morning, everyone!.');
+    } else if (date.getHours() == 23) {
+        console.log("11pm");
+        client.channels.cache.get(channelTwoID).send("Goodnight, everyone.");
+    } else {
+        console.log("checked after another hour its currently hour " + date.getHours());
+        setTimeout(checkTimeFunc, 3600000);//one hour 
+    }
+}
 client.login(process.env.BOT_TOKEN)
 //npm run devStart
