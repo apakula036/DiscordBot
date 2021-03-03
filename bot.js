@@ -7,7 +7,17 @@ const axios = require('axios');
 const date = new Date();
 const channelTwoID = process.env.GENERAL_TWOID;
 const channelOneID = process.env.GENERAL_ONEID;
+//Twitter API Stuff
+const twit = require('twit');
+const T = new twit({
 
+    consumer_key:process.env.CONSUMER_KEYAPI
+    consumer_secret:process.env.CONSUMER_KEYAPI_SECRET
+    access_token:process.env.ACCESS_TOKENAPI
+    access_token_secret:process.env.ACCESS_TOKENAPI_SECRET
+    
+});
+module.exports = T; 
 client.on('ready', () => {
     client.channels.cache.get(channelTwoID).send('Im Ready!');
     checkTimeFunc();
@@ -16,32 +26,24 @@ client.on('ready', () => {
 
 client.on('message', msg => {
     if (msg.content === "!help") {
-        //msg.channel.send("not tagged")
         msg.reply('I can do !advice, !senddog, !eightball, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !sports, and !ping')
         msg.react("👍")
-
     }
 })
 
 client.on('message', msg => {
     if (msg.content === "!ping") {
-        //msg.channel.send("not tagged")
         msg.reply("Pong!")
         msg.react("❤️")
     }
 })
-
-
 client.on('message', msg => {
     if (msg.content === "!senddog") {
         msg.channel.send("Doggo" + randomDog())
-
     function randomDog(){
         axios.get("https://dog.ceo/api/breeds/image/random")
         .then((res) => {
-            //console.log('RES:', res.data.message)
             msg.channel.send(res.data.message)
-            
         })
         .catch((err) => {
             console.error('ERR:', err)
@@ -57,8 +59,7 @@ client.on('message', msg => {
         axios.get("https://api.thecatapi.com/v1/images/search")
         .then((res) => {
             //console.log('RES:', res.data[0].url)
-            msg.channel.send(res.data[0].url)
-            
+            msg.channel.send(res.data[0].url)  
         })
         .catch((err) => {
             console.error('ERR:', err)
@@ -66,7 +67,6 @@ client.on('message', msg => {
         return " "}
         }
 })
-
 client.on('message', msg => {
     if (msg.content === "!advice") {
         msg.channel.send("Helpful bot says: " + giveAdvice())
@@ -75,7 +75,6 @@ client.on('message', msg => {
         .then((res) => {
             //console.log('RES:', res.data.slip.advice)//test what JSON you get back and assess leave as just res first then manipulate that 
             msg.reply(res.data.slip.advice)//send to the channel 
-            
         })
         .catch((err) => {
             console.error('ERR:', err)
@@ -83,7 +82,6 @@ client.on('message', msg => {
         return " "}//in case its giving errors of blank messages here a blank to silence that 
         }
 })
-
 const eightBallArray = [
         "As I see it, yes.",
         "Ask again later.",
@@ -215,7 +213,6 @@ client.on('message', msg => {
             console.error('ERR:', err)
         })
     }
-
 })
 function checkTimeFunc(){
     if(date.getHours() == 17){
