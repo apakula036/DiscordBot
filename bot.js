@@ -7,30 +7,44 @@ const axios = require('axios');
 const date = new Date();
 const channelTwoID = process.env.GENERAL_TWOID;
 const channelOneID = process.env.GENERAL_ONEID;
-//Twitter API Stuff
-const twit = require('twit');
-const T = new twit({
 
-    consumer_key:process.env.CONSUMER_KEYAPI
-    consumer_secret:process.env.CONSUMER_KEYAPI_SECRET
-    access_token:process.env.ACCESS_TOKENAPI
-    access_token_secret:process.env.ACCESS_TOKENAPI_SECRET
-    
-});
-module.exports = T; 
+//Twitter API Stuff
+var Twit = require('twit');
+var T = new Twit({
+  consumer_key:         process.env.CONSUMER_KEYAPI,
+  consumer_secret:      process.env.CONSUMER_KEYAPI_SECRET,
+  access_token:         process.env.ACCESS_TOKENAPI,
+  access_token_secret:  process.env.ACCESS_TOKENAPI_SECRET,
+})
+function makeTweets(theTweet){
+    //Not looping anything to post again, not getting banned again also PS twitter devs if youre reading this dont ban me 
+    T.post('statuses/update', { status: theTweet }, function(err, data, response) {
+        console.log(data);
+    })
+}
 client.on('ready', () => {
     client.channels.cache.get(channelTwoID).send('Im Ready!');
     checkTimeFunc();
     greetings();
 })
-
 client.on('message', msg => {
     if (msg.content === "!help") {
         msg.reply('I can do !advice, !senddog, !eightball, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !sports, and !ping')
         msg.react("👍")
     }
-})
+    else if(msg.content.startsWith("!tweet")){
+        const args = msg.content.slice().trim().split(/ +/g);
+        const theCommand = args.shift().toLowerCase();
 
+        var stringer = "";
+        for(i = 0; i < args.length; i++){
+            stringer = stringer + " " + args[i];
+        }
+        //console.log(stringer + "-the tweet content");
+        makeTweets(stringer); 
+        msg.reply('You tweeted: '+ stringer);
+    }
+})
 client.on('message', msg => {
     if (msg.content === "!ping") {
         msg.reply("Pong!")
