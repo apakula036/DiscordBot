@@ -21,17 +21,17 @@ function makeTweets(theTweet){
     //Not looping anything to post again, not getting banned again also PS twitter devs if youre reading this dont ban me 
     //EDIT: it almost got banned again seperate reason though 
     T.post('statuses/update', { status: theTweet }, function(err, data, response) {
-        saveTweetID(data.id_str);
+        saveTweetID(data.id_str, theTweet);
         data = " ";
         theTweet = " ";
     })
 }
-function saveTweetID(tweetID){
+function saveTweetID(tweetID, theTweet){
     fs.appendFile('mynewfile1.txt', "\r\n", function (err) {
         if (err) throw err;
         console.log('Saved!');
       });
-    fs.appendFile('mynewfile1.txt', tweetID, function (err) {
+    fs.appendFile('mynewfile1.txt', tweetID +"_"+ theTweet, function (err) {
         if (err) throw err;
         console.log('Saved!');
       });
@@ -47,7 +47,7 @@ function readTweets(){
                     console.log(data); 
                     let arrayOfIds = [];
                     arrayOfIds.push(data);
-                    console.log(arrayOfIds.length);
+                    console.log(arrayOfIds.length);//needs fix, seperate on _s each to get each item then make the array
             }); 
         });
     });
@@ -61,7 +61,7 @@ client.on('ready', () => {
 })
 client.on('message', msg => {
     if (msg.content === "!help") {
-        msg.reply('I can do !advice, !senddog, !eightball, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !sports, and !ping')
+        msg.reply('I can do !advice, !tweet "Your tweet here", !senddog, !eightball, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !sports, and !ping')
         msg.react("👍")
     }
     else if(msg.content.startsWith("!tweet")){
