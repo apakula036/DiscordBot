@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-
+var fs = require('fs');
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const axios = require('axios');
@@ -16,16 +16,48 @@ var T = new Twit({
   access_token:         process.env.ACCESS_TOKENAPI,
   access_token_secret:  process.env.ACCESS_TOKENAPI_SECRET,
 })
+
 function makeTweets(theTweet){
     //Not looping anything to post again, not getting banned again also PS twitter devs if youre reading this dont ban me 
+    //EDIT: it almost got banned again seperate reason though 
     T.post('statuses/update', { status: theTweet }, function(err, data, response) {
-        console.log(data);
+        saveTweetID(data.id_str);
+        data = " ";
+        theTweet = " ";
     })
 }
+function saveTweetID(tweetID){
+    fs.appendFile('mynewfile1.txt', "\r\n", function (err) {
+        if (err) throw err;
+        console.log('Saved!');
+      });
+    fs.appendFile('mynewfile1.txt', tweetID, function (err) {
+        if (err) throw err;
+        console.log('Saved!');
+      });
+}
+
+function readTweets(){
+    fs.stat('mynewfile1.txt', function (error, stats) { 
+        fs.open('mynewfile1.txt', "r", function (error, fd) { 
+            var buffer = new Buffer.alloc(stats.size); 
+            fs.read(fd, buffer, 0, buffer.length, 
+                null, function (error, bytesRead, buffer) { 
+                    var data = buffer.toString("utf8"); 
+                    console.log(data); 
+                    let arrayOfIds = [];
+                    arrayOfIds.push(data);
+                    console.log(arrayOfIds.length);
+            }); 
+        });
+    });
+}
+
 client.on('ready', () => {
     client.channels.cache.get(channelTwoID).send('Im Ready!');
     checkTimeFunc();
     greetings();
+    readTweets();
 })
 client.on('message', msg => {
     if (msg.content === "!help") {
