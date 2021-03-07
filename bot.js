@@ -101,33 +101,38 @@ client.on('message', msg => {
     if (msg.content === "!meow") {
         msg.channel.send("meow" + randomCat())
 
-    function randomCat(){
-        axios.get("https://api.thecatapi.com/v1/images/search")
-        .then((res) => {
-            //console.log('RES:', res.data[0].url)
-            msg.channel.send(res.data[0].url)  
-        })
-        .catch((err) => {
-            console.error('ERR:', err)
-        })
-        return " "}
+        function randomCat(){
+            axios.get("https://api.thecatapi.com/v1/images/search")
+            .then((res) => {
+                //console.log('RES:', res.data[0].url)
+                msg.channel.send(res.data[0].url)  
+            })
+            .catch((err) => {
+                console.error('ERR:', err)
+            })
+            return " "
         }
+    }
 })
 client.on('message', msg => {
     if (msg.content === "!advice") {
-        msg.channel.send("Helpful bot says: " + giveAdvice())
-    function giveAdvice(){
-        axios.get("https://api.adviceslip.com/advice")//api of somewhere 
-        .then((res) => {
-            //console.log('RES:', res.data.slip.advice)//test what JSON you get back and assess leave as just res first then manipulate that 
-            msg.reply(res.data.slip.advice)//send to the channel 
-        })
-        .catch((err) => {
-            console.error('ERR:', err)
-        })
-        return " "}//in case its giving errors of blank messages here a blank to silence that 
-        }
+        client.channels.cache.get(channelTwoID).send(giveAdvice())
+    }
 })
+
+function giveAdvice(){
+    axios.get("https://api.adviceslip.com/advice")
+    .then((res) => {
+        //console.log('RES:', res.data.slip.advice)
+        client.channels.cache.get(channelTwoID).send(res.data.slip.advice)
+    })
+    .catch((err) => {
+        console.error('ERR:', err)
+    })
+    return " ";
+}
+    
+
 const eightBallArray = [
         "As I see it, yes.",
         "Ask again later.",
@@ -272,8 +277,9 @@ function greetings(){
     if(date.getHours() == 7) {
         console.log("7am");
         client.channels.cache.get(channelOneID).send('Good morning, everyone!.');
-    } else if (date.getHours() == 23) {
-        console.log("11pm");
+        giveAdvice();
+    } else if (date.getHours() == 0) {
+        console.log("midnight");
         client.channels.cache.get(channelTwoID).send("Goodnight, everyone.");
     } else {
         console.log("checked after another hour its currently hour " + date.getHours());
