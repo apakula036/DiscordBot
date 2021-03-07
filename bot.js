@@ -113,6 +113,9 @@ client.on('message', msg => {
             return " "
         }
     }
+    else if(msg.content === "!taco") {
+        msg.reply(getTaco())
+    }
 })
 client.on('message', msg => {
     if (msg.content === "!advice") {
@@ -125,6 +128,17 @@ function giveAdvice(){
     .then((res) => {
         //console.log('RES:', res.data.slip.advice)
         client.channels.cache.get(channelTwoID).send(res.data.slip.advice)
+    })
+    .catch((err) => {
+        console.error('ERR:', err)
+    })
+    return " ";
+}
+function getTaco(){
+    axios.get("http://taco-randomizer.herokuapp.com/random/?full-taco=true")
+    .then((res) => {
+        console.log('RES:', res.data.base_layer.recipe)
+        client.channels.cache.get(channelTwoID).send(res.data.base_layer.recipe)
     })
     .catch((err) => {
         console.error('ERR:', err)
