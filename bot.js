@@ -121,8 +121,16 @@ client.on('message', msg => {
     if (msg.content === "!advice") {
         client.channels.cache.get(channelTwoID).send(giveAdvice())
     }
+    else if (msg.content === "!noteThis"){
+        client.channels.cache.get(channelTwoID).send(saveToTextFile(theMessage))
+    }
 })
-
+function saveToTextFile(theMessage){
+    fs.appendFile('newFile2.txt', theMessage, function (err) {
+        if (err) throw err;
+        console.log('Saved!');
+    })
+}
 function giveAdvice(){
     axios.get("https://api.adviceslip.com/advice")
     .then((res) => {
