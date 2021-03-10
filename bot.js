@@ -121,13 +121,19 @@ client.on('message', msg => {
     if (msg.content === "!advice") {
         client.channels.cache.get(channelTwoID).send(giveAdvice())
     }
-    else if (msg.content === "!noteThis"){
-        client.channels.cache.get(channelTwoID).send(saveToTextFile(theMessage))
+    else if (msg.content.startsWith("!noteThis")){
+        
+        const args = msg.content.slice().trim().split(/ +/g);
+        const theCommand = args.shift().toLowerCase();
+        const theMessage = args[0];
+        client.channels.cache.get(channelTwoID).send("Saved "+ theMessage + " to the bots notepad!(my pc thanks)")
+        saveToTextFile(theMessage);
     }
 })
 function saveToTextFile(theMessage){
     fs.appendFile('newFile2.txt', theMessage, function (err) {
         if (err) throw err;
+        console.log(theMessage)
         console.log('Saved!');
     })
 }
