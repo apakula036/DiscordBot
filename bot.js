@@ -120,14 +120,16 @@ client.on('message', msg => {
 client.on('message', msg => {
     if (msg.content === "!advice") {
         client.channels.cache.get(channelTwoID).send(giveAdvice())
-    }
-    else if (msg.content.startsWith("!noteThis")){
-        
+    } else if (msg.content.startsWith("!noteThis")){
         const args = msg.content.slice().trim().split(/ +/g);
         const theCommand = args.shift().toLowerCase();
-        const theMessage = args[0];
-        client.channels.cache.get(channelTwoID).send("Saved "+ theMessage + " to the bots notepad!(my pc thanks)")
-        saveToTextFile(theMessage);
+        //const theMessage = args[0];
+        var stringer = ""
+        for(i = 0; i < args.length; i++){
+            stringer = stringer + " " + args[i];
+        }
+        client.channels.cache.get(channelTwoID).send("Saved "+ stringer + " to the bots notepad!(my pc thanks)")
+        saveToTextFile(stringer);
     }
 })
 function saveToTextFile(theMessage){
@@ -238,7 +240,7 @@ client.on('message', msg => {
         const city = args[0];
             axios.get("http://api.openweathermap.org/data/2.5/weather?q=" + city + ",us&units=imperial&APPID=" + process.env.API_TOKEN_KEY)
             .then((res) => { 
-                msg.reply("The temperature is " + res.data.main.temp + " degrees. The real feel is " + res.data.main.feels_like+  " degrees. The wind speed is " + res.data.wind.speed + "mph. The sky is " + res.data.weather[0].main.toLowerCase()+". Please, have a nice day.");   
+                msg.reply("The temperature is " + res.data.main.temp + " degrees. The real feel is " + res.data.main.feels_like + " degrees. The wind speed is " + res.data.wind.speed + "mph. The sky is " + res.data.weather[0].main.toLowerCase()+". Please, have a nice day.");   
             })
             .catch((err) => {
                 console.error('ERR:', err)
