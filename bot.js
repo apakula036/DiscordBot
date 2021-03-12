@@ -59,7 +59,7 @@ client.on('ready', () => {
     greetings();
     readTweets();
 })
-client.on('message', msg => {
+client.on('message', msg => {//"!help"
     if (msg.content === "!help") {
         msg.reply('I can do !advice, !tweet "Your tweet here", !senddog, !eightball, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !sports, and !ping')
         msg.react("👍")
@@ -77,13 +77,13 @@ client.on('message', msg => {
         msg.reply('You tweeted: '+ stringer);
     }
 })
-client.on('message', msg => {
+client.on('message', msg => {//"!ping"
     if (msg.content === "!ping") {
         msg.reply("Pong!")
         msg.react("❤️")
     }
 })
-client.on('message', msg => {
+client.on('message', msg => {//"!senddog"
     if (msg.content === "!senddog") {
         msg.channel.send("Doggo" + randomDog())
     function randomDog(){
@@ -97,7 +97,7 @@ client.on('message', msg => {
         return " "}
         }
 })
-client.on('message', msg => {
+client.on('message', msg => {//"!meow"
     if (msg.content === "!meow") {
         msg.channel.send("meow" + randomCat())
 
@@ -117,7 +117,7 @@ client.on('message', msg => {
         msg.reply(getTaco())
     }
 })
-client.on('message', msg => {
+client.on('message', msg => {//"!advice"
     if (msg.content === "!advice") {
         client.channels.cache.get(channelTwoID).send(giveAdvice())
     } else if (msg.content.startsWith("!noteThis")){
@@ -161,8 +161,6 @@ function getTaco(){
     })
     return " ";
 }
-    
-
 const eightBallArray = [
         "As I see it, yes.",
         "Ask again later.",
@@ -186,7 +184,7 @@ const eightBallArray = [
         "You may rely on it.",
         "Eat my shorts."
 ];
-client.on('message', msg => {
+client.on('message', msg => {//"!eightball"
     if (msg.content === "!eightball") {
         const randomNumber = Math.floor(Math.random()* eightBallArray.length);
         msg.reply(eightBallArray[randomNumber])
@@ -194,7 +192,7 @@ client.on('message', msg => {
     }
 })
 var i;
-client.on('message', msg => {
+client.on('message', msg => {//dad bot 
     if ((msg.content.startsWith("Im")) || (msg.content.startsWith("I’m")) || (msg.content.startsWith("im")) || (msg.content.startsWith("i'm"))){
         const args = msg.content.slice().trim().split(/ +/g);
         const theCommand = args.shift();
@@ -206,7 +204,7 @@ client.on('message', msg => {
         return;
     }
 })
-client.on('message', msg => {
+client.on('message', msg => {//"!coinFlip"
     if (msg.content === "!coinFlip") {
         const coin = 2;
         const randomNumber = Math.floor(Math.random()* coin);
@@ -225,6 +223,25 @@ client.on('message', msg => {
         }
     }
 })
+
+//const dispatcher = connection.play('\DiscordBot\sounds');
+//const generalVoiceOne = '771085722219708476';
+client.on('message', message => {
+    if (message.content.startsWith("!playAudio")){
+        const channel = message.member.voiceChannel;
+        //var VC = msg.member.voiceChannel;
+        //console.log(VC);
+        //var voiceChannel = '771085722219708476';
+        //let channel = client.channels.get('771085722219708476');
+        //let channel = client.channels.find('name', 'poop gang');
+        console.log(channel);
+        channel.join().then(connection => {
+                const dispatcher = connection.playFile('C:\Users\apaku\OneDrive\Desktop\CodingStuff\DiscordBot\sounds\song.mp3');
+                dispatcher.on("finish", end => {channel.leave()});
+            })
+            .catch(console.error);
+    };
+});/*
 client.on('message', msg => {
     if (msg.content.startsWith("!randomBetween")){
     const args = msg.content.slice().trim().split(/ +/g);
@@ -294,7 +311,7 @@ client.on('message', msg => {
             console.error('ERR:', err)
         })
     }
-})
+})*/
 function checkTimeFunc(){
     if(date.getHours() == 17){
         client.channels.cache.get(channelTwoID).send('Welcome home from work Andrew. I hope it went well.');
