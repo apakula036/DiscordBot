@@ -5,6 +5,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const axios = require('axios');
 const date = new Date();
+//const ffmpeg = require("ffmpeg");
 const channelTwoID = process.env.GENERAL_TWOID;
 const channelOneID = process.env.GENERAL_ONEID;
 
@@ -223,25 +224,54 @@ client.on('message', msg => {//"!coinFlip"
         }
     }
 })
-
+/*
 //const dispatcher = connection.play('\DiscordBot\sounds');
 //const generalVoiceOne = '771085722219708476';
 client.on('message', message => {
     if (message.content.startsWith("!playAudio")){
-        const channel = message.member.voiceChannel;
-        //var VC = msg.member.voiceChannel;
-        //console.log(VC);
-        //var voiceChannel = '771085722219708476';
+        const channelTest = message.member.voiceChannel;
+        channel = client.channels.cache.get("771085722219708476");
+        client.channels.fetch('771085722219708476')
+            .then(channel => console.log(channel.name))
+            .catch(console.error);
+        var VC = message.member.voiceChannel;
         //let channel = client.channels.get('771085722219708476');
-        //let channel = client.channels.find('name', 'poop gang');
+        //let channelTestTwo = client.channels.find('name', 'poop gang');
+        //console.log(VC);
         console.log(channel);
+        //console.log(channelTestTwo);
+        console.log(channelTest);
         channel.join().then(connection => {
-                const dispatcher = connection.playFile('C:\Users\apaku\OneDrive\Desktop\CodingStuff\DiscordBot\sounds\song.mp3');
-                dispatcher.on("finish", end => {channel.leave()});
+            //const connection = await message.member.voice.channel.join();
+            const dispatcher = connection.play('\sounds\song.mp3').join();
+            connection.play('audio.mp3', { volume: 0.5 });
+            dispatcher.on('start', () => {
+                console.log('audio.mp3 is now playing!');
+            });
+            dispatcher.on("finish", end => {channel.leave()});
             })
             .catch(console.error);
     };
-});/*
+});
+*/
+client.on('message', message => {
+    if (message.content.startsWith("!playAudioTwo")){
+        var channel = client.channels.cache.get("771085722219708476");
+        // Join the same voice channel of the author of the message 
+        //const connection = message.member.voice.channel.join();
+        const connection = channel.join();
+        const dispatcher = connection.play('\sounds\song.mp3');
+        //const dispatcher = connection.play('https://www.youtube.com/watch?v=9_7xcFKzu3E&list=RD9_7xcFKzu3E&start_radio=1');
+        //const dispatcher = connection.play('https://www.youtube.com/watch?v=_d8OqVavMF0');
+        dispatcher.on('start', () => {
+            console.log('audio.mp3 is now playing!');
+        });
+        dispatcher.on('finish', () => {
+            console.log('audio.mp3 has finished playing!');
+        });
+    }
+});
+/* 
 client.on('message', msg => {
     if (msg.content.startsWith("!randomBetween")){
     const args = msg.content.slice().trim().split(/ +/g);
