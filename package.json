@@ -16,7 +16,9 @@
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
     "jquery": "^3.5.1",
-    "twit": "^2.2.11"
+    "twit": "^2.2.11",
+    "ytdl-core": "^4.5.0",
+    "ytsearcher": "^1.2.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.6"

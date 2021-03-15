@@ -5,9 +5,12 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const axios = require('axios');
 const date = new Date();
+const queue = new Map();
 //const ffmpeg = require("ffmpeg");
 const channelTwoID = process.env.GENERAL_TWOID;
 const channelOneID = process.env.GENERAL_ONEID;
+const yttl = require('ytdl-core');
+const YTSearcher = require('ytsearcher');
 
 //Twitter API Stuff
 var Twit = require('twit');
@@ -224,14 +227,13 @@ client.on('message', msg => {//"!coinFlip"
         }
     }
 })
-/*
 //const dispatcher = connection.play('\DiscordBot\sounds');
 //const generalVoiceOne = '771085722219708476';
 client.on('message', message => {
-    if (message.content.startsWith("!playAudio")){
+    if (message.content.startsWith("!playSong")){
         const channelTest = message.member.voiceChannel;
         channel = client.channels.cache.get("771085722219708476");
-        client.channels.fetch('771085722219708476')
+        const channelThree = client.channels.fetch('771085722219708476')
             .then(channel => console.log(channel.name))
             .catch(console.error);
         var VC = message.member.voiceChannel;
@@ -253,9 +255,56 @@ client.on('message', message => {
             .catch(console.error);
     };
 });
-*/
+client.on('message', message => {
+    if (message.content === "!playSomething" ){
+        client.on('message', async message => {
+            // Join the same voice channel of the author of the message
+            if (message.member.voice.channel) {
+                const connection = await message.member.voice.channel.join();
+                const dispatcher = connection.play('./song.mp3');
+                connection.play('./song.mp3');
+                console.log(connection )
+                console.log(dispatcher)
+                console.log(message.member.voice.channel)
+                dispatcher.on('start', () => {
+                    console.log('audio.mp3 is now playing!');
+                });
+                dispatcher.on('finish', () => {
+                    console.log('audio.mp3 has finished playing!');
+                    connection.disconnect();
+                });
+                dispatcher.on('error', console.error);
+            }
+            else {
+                console.log(message.member.voice.channel);
+                console.log("no channel?");
+            }
+        });
+    };
+});
+
+
 client.on('message', message => {
     if (message.content.startsWith("!playAudioTwo")){
+        message.member.voice.channel.join()
+        .then(connection => { 
+          const dispatcher = connection.playFile(require("path").join(__dirname, './song.mp3'));
+      
+          dispatcher.on('start', () => { //not working
+              dispatcher.setVolume(0.70);
+              console.log("Playing");
+          }); 
+          dispatcher.on('error', (err) => console.log(err)); //no errors
+      
+              dispatcher.on('end', end => { //working fine
+                  console.log("Finished");
+                  console.log("End: " + end);
+                  message.member.voiceChannel.leave()
+              });
+            })
+        }
+        });
+        /*
         var channel = client.channels.cache.get("771085722219708476");
         // Join the same voice channel of the author of the message 
         //const connection = message.member.voice.channel.join();
@@ -268,9 +317,31 @@ client.on('message', message => {
         });
         dispatcher.on('finish', () => {
             console.log('audio.mp3 has finished playing!');
-        });
+        });*/
+
+client.on('message', async(message) => {
+    const prefix = "!";
+
+    const serverQue = queue.get(message.guild.id);
+
+    const args = message.content.slice(prefix.length).trim().split(/ +/g);
+    const command = args.shift().toLowerCase();
+
+    if(command === 'play'){
+        execute(message, serverQue);
+        console.log("Im playing " + args[0]);
+    }
+
+    async function execute(message, serverQue){
+        let vc = message.member.voice.channel;
+        if(!vc){
+            return message.channel.send("No channel found");
+        } else {
+
+        }
     }
 });
+
 /* 
 client.on('message', msg => {
     if (msg.content.startsWith("!randomBetween")){
