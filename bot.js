@@ -250,7 +250,7 @@ client.on('message', message => {
             // Join the same voice channel of the author of the message
             if (message.member.voice.channel) {
                 const connection = await message.member.voice.channel.join();
-                const dispatcher = connection.play('sounds/song.mp3');
+                const dispatcher = connection.play('sounds/guitar.ogg');
                 //const dispatcher = connection.play(require("path").join(__dirname, './song.mp3'));
                 
                 //connection.play('https://www.youtube.com/watch?v=2ZIpFytCSVc');
@@ -259,7 +259,7 @@ client.on('message', message => {
                 
                 dispatcher.on('start', () => {
                     //dispatcher.setVolume(0.90);
-                    connection.play('https://www.youtube.com/watch?v=2ZIpFytCSVc');
+                    connection.play('sounds/guitar.ogg');
                     console.log('audio.mp3 is now playing!');
                 });
                 
