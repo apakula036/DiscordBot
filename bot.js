@@ -239,7 +239,7 @@ client.on('message', message => {
         // Joining the channel and creating a VoiceConnection.
         message.member.voice.channel.join().then(VoiceConnection => {
             // Playing the music, and, on finish, disconnecting the bot.
-            VoiceConnection.play("sounds\song.mp3").on("finish", () => VoiceConnection.disconnect());
+            VoiceConnection.play("sounds/song.mp3").on("finish", () => VoiceConnection.disconnect());
             message.reply("Playing...");
         }).catch(e => console.log(e))
     };
@@ -250,23 +250,23 @@ client.on('message', message => {
             // Join the same voice channel of the author of the message
             if (message.member.voice.channel) {
                 const connection = await message.member.voice.channel.join();
-                const dispatcher = connection.play('C:\Users\apaku\OneDrive\Desktop\CodingStuff\DiscordBot\sounds\song.mp3');
+                const dispatcher = connection.play('sounds/song.mp3');
                 //const dispatcher = connection.play(require("path").join(__dirname, './song.mp3'));
-                //connection.play('./song.mp3');
+                
                 //connection.play('https://www.youtube.com/watch?v=2ZIpFytCSVc');
                 //connection.play(require("path").join(__dirname, './song.mp3'));
-                console.log(dispatcher.on('start', () => { }) );
+                
                 
                 dispatcher.on('start', () => {
-                    dispatcher.setVolume(0.90);
-                    console.log(connection.play);
+                    //dispatcher.setVolume(0.90);
+                    connection.play('https://www.youtube.com/watch?v=2ZIpFytCSVc');
                     console.log('audio.mp3 is now playing!');
                 });
-                /*
+                
                 dispatcher.on('finish', () => {
                     console.log('audio.mp3 has finished playing!');
                     connection.disconnect();
-                });*/
+                });
                 dispatcher.on('error', console.error);
             }
             else {
