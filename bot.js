@@ -20,7 +20,6 @@ var T = new Twit({
   access_token:         process.env.ACCESS_TOKENAPI,
   access_token_secret:  process.env.ACCESS_TOKENAPI_SECRET,
 })
-
 function makeTweets(theTweet){
     //Not looping anything to post again, not getting banned again also PS twitter devs if youre reading this dont ban me 
     //EDIT: it almost got banned again seperate reason though 
@@ -40,7 +39,6 @@ function saveTweetID(tweetID, theTweet){
         console.log('Saved!');
       });
 }
-
 function readTweets(){
     fs.stat('mynewfile1.txt', function (error, stats) { 
         fs.open('mynewfile1.txt', "r", function (error, fd) { 
@@ -56,7 +54,6 @@ function readTweets(){
         });
     });
 }
-
 client.on('ready', () => {
     client.channels.cache.get(channelTwoID).send('Im Ready!');
     checkTimeFunc();
@@ -81,46 +78,27 @@ client.on('message', msg => {//"!help"
         msg.reply('You tweeted: '+ stringer);
     }
 })
-client.on('message', msg => {//"!ping"
-    if (msg.content === "!ping") {
-        msg.reply("Pong!")
-        msg.react("❤️")
-    }
-})
-client.on('message', msg => {//"!senddog"
-    if (msg.content === "!senddog") {
-        msg.channel.send("Doggo" + randomDog())
-    function randomDog(){
-        axios.get("https://dog.ceo/api/breeds/image/random")
-        .then((res) => {
-            msg.channel.send(res.data.message)
-        })
-        .catch((err) => {
-            console.error('ERR:', err)
-        })
-        return " "}
-        }
-})
-client.on('message', msg => {//"!meow"
-    if (msg.content === "!meow") {
-        msg.channel.send("meow" + randomCat())
-
-        function randomCat(){
-            axios.get("https://api.thecatapi.com/v1/images/search")
-            .then((res) => {
-                //console.log('RES:', res.data[0].url)
-                msg.channel.send(res.data[0].url)  
-            })
-            .catch((err) => {
-                console.error('ERR:', err)
-            })
-            return " "
-        }
-    }
-    else if(msg.content === "!taco") {
-        msg.reply(getTaco())
-    }
-})
+function randomDog(message){
+    axios.get("https://dog.ceo/api/breeds/image/random")
+    .then((res) => {
+        message.channel.send(res.data.message)
+    })
+    .catch((err) => {
+        console.error('ERR:', err)
+    })
+    return " "
+}
+function randomCat(message){
+    axios.get("https://api.thecatapi.com/v1/images/search")
+    .then((res) => {
+        //console.log('RES:', res.data[0].url)
+        message.channel.send(res.data[0].url)  
+    })
+    .catch((err) => {
+        console.error('ERR:', err)
+    })
+    return " "
+}
 client.on('message', msg => {//"!advice"
     if (msg.content === "!advice") {
         client.channels.cache.get(channelTwoID).send(giveAdvice())
@@ -188,13 +166,6 @@ const eightBallArray = [
         "You may rely on it.",
         "Eat my shorts."
 ];
-client.on('message', msg => {//"!eightball"
-    if (msg.content === "!eightball") {
-        const randomNumber = Math.floor(Math.random()* eightBallArray.length);
-        msg.reply(eightBallArray[randomNumber])
-        msg.react("🎱")
-    }
-})
 var i;
 client.on('message', msg => {//dad bot 
     if ((msg.content.startsWith("Im")) || (msg.content.startsWith("I’m")) || (msg.content.startsWith("im")) || (msg.content.startsWith("i'm"))){
@@ -208,52 +179,65 @@ client.on('message', msg => {//dad bot
         return;
     }
 })
-client.on('message', msg => {//"!coinFlip"
-    if (msg.content === "!coinFlip") {
+client.on('message', message => {
+    if (message.content === "!ping") {
+        message.reply("Pong!")
+        message.react("❤️")
+    }
+    else if (message.content == "!paulGilb") {
+        playSong("sounds/song.mp3", message)
+    }
+    else if (message.content == "!ironManGuitarOnly") {
+        playSong("sounds/guitar.ogg", message)
+    }
+    else if (message.content == "!BFGDivision") {
+        playSong("sounds/BFGDivision", message)
+    }
+    else if (message.content == "!BritenyToxic") {
+        playSong("sounds/BritenyToxic.ogg", message)
+    }
+    else if (message.content == "!C418DryHands") {
+        playSong("sounds/C418DryHands.ogg", message)
+    }
+    else if (message.content == "!C418WetHands") {
+        playSong("sounds/C418WetHands.ogg", message)
+    }
+    else if (message.content == "!saveThatShit") {
+        playSong("sounds/saveThatShit.ogg", message)
+    }
+    else if (message.content === "!coinFlip") {
         const coin = 2;
-        const randomNumber = Math.floor(Math.random()* coin);
+        const randomNumber = Math.floor(Math.random() * 2);
         if(randomNumber == 1){
-            msg.reply("Heads!" , {
+            message.reply("Heads!" , {
             files: [
                 "https://faculty.math.illinois.edu/~hildebr/fakerandomness/resources/heads.png"
-            ] 
-        });
+            ]
+        })
         } else{
-            msg.reply("Tails!", {
+            message.reply("Tails!", {
                 files: [
                     "https://random-ize.com/coin-flip/us-quarter/us-quarter-back.jpg"
                 ] 
             });
         }
     }
-})
-//const dispatcher = connection.play('\DiscordBot\sounds');
-//const generalVoiceOne = '771085722219708476';
-client.on('message', message => {
-    if (message.content == "!") {
-        playSong("sounds/song.mp3");
+    else if (message.content === "!eightball") {
+        const randomNumber = Math.floor(Math.random()* eightBallArray.length);
+        message.reply(eightBallArray[randomNumber])
+        message.react("🎱")
     }
-    else if (message.content == "!") {
-        playSong("sounds/guitar.ogg");
+    else if (message.content === "!meow") {
+        message.channel.send("meow" + randomCat(message))
     }
-    else if (message.content == "!BFGDivision") {
-        playSong("sounds/BFGDivision");
+    else if(message.content === "!taco") {
+        message.reply(getTaco())
     }
-    else if (message.content == "!BritenyToxic") {
-        playSong("sounds/BritenyToxic.ogg");
-    }
-    else if (message.content == "!C418DryHands") {
-        playSong("sounds/C418DryHands.ogg");
-    }
-    else if (message.content == "!C418WetHands") {
-        playSong("sounds/C418WetHands.ogg");
-    }
-    else if (message.content == "!saveThatShit") {
-        playSong("sounds/saveThatShit.ogg");
-    }
+    else if (message.content === "!senddog") {
+        message.channel.send("Doggo" + randomDog(message))
+        }
 });
-function playSong(songName){
-    
+function playSong(songName, message){
         // Checking if the message author is in a voice channel.
         if (!message.member.voice.channel) 
             return message.reply("You must be in a voice channel.");
@@ -269,7 +253,7 @@ function playSong(songName){
         }).catch(err => 
             console.log(err))
 };
-client.on('message', msg => {
+client.on('message', msg => {//randombetween
     if (msg.content.startsWith("!randomBetween")){
     const args = msg.content.slice().trim().split(/ +/g);
     const command = args.shift().toLowerCase();   
@@ -277,7 +261,7 @@ client.on('message', msg => {
     msg.channel.send("You randomed between "+args[0]+" and 0 to get "+ randomNumber);
     }
 });
-client.on('message', msg => {
+client.on('message', msg => {//weather
     if (msg.content.startsWith("!weather")){
         const args = msg.content.slice().trim().split(/ +/g);
         const theCommand = args.shift().toLowerCase();
