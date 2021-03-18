@@ -230,76 +230,45 @@ client.on('message', msg => {//"!coinFlip"
 //const dispatcher = connection.play('\DiscordBot\sounds');
 //const generalVoiceOne = '771085722219708476';
 client.on('message', message => {
-    if (message.content == "Play the Funky Tune.") {
-        // Checking if the message author is in a voice channel.
-        if (!message.member.voice.channel) return message.reply("You must be in a voice channel.");
-        // Checking if the bot is in a voice channel.
-        if (message.guild.me.voice.channel) return message.reply("I'm already playing.");
+    if (message.content == "!") {
+        playSong("sounds/song.mp3");
+    }
+    else if (message.content == "!") {
+        playSong("sounds/guitar.ogg");
+    }
+    else if (message.content == "!BFGDivision") {
+        playSong("sounds/BFGDivision");
+    }
+    else if (message.content == "!BritenyToxic") {
+        playSong("sounds/BritenyToxic.ogg");
+    }
+    else if (message.content == "!C418DryHands") {
+        playSong("sounds/C418DryHands.ogg");
+    }
+    else if (message.content == "!C418WetHands") {
+        playSong("sounds/C418WetHands.ogg");
+    }
+    else if (message.content == "!saveThatShit") {
+        playSong("sounds/saveThatShit.ogg");
+    }
+});
+function playSong(songName){
     
+        // Checking if the message author is in a voice channel.
+        if (!message.member.voice.channel) 
+            return message.reply("You must be in a voice channel.");
+        // Checking if the bot is in a voice channel.
+        if (message.guild.me.voice.channel) 
+            return message.reply("I'm already playing.");
         // Joining the channel and creating a VoiceConnection.
         message.member.voice.channel.join().then(VoiceConnection => {
             // Playing the music, and, on finish, disconnecting the bot.
-            VoiceConnection.play("sounds/song.mp3").on("finish", () => VoiceConnection.disconnect());
-            message.reply("Playing...");
-        }).catch(e => console.log(e))
-    };
-});
-client.on('message', message => {
-    if (message.content === "!playSomething" ){
-        client.on('message', async message => {
-            // Join the same voice channel of the author of the message
-            if (message.member.voice.channel) {
-                const connection = await message.member.voice.channel.join();
-                const dispatcher = connection.play('sounds/guitar.ogg');
-                //const dispatcher = connection.play(require("path").join(__dirname, './song.mp3'));
-                
-                //connection.play('https://www.youtube.com/watch?v=2ZIpFytCSVc');
-                //connection.play(require("path").join(__dirname, './song.mp3'));
-                
-                
-                dispatcher.on('start', () => {
-                    //dispatcher.setVolume(0.90);
-                    connection.play('sounds/guitar.ogg');
-                    console.log('audio.mp3 is now playing!');
-                });
-                
-                dispatcher.on('finish', () => {
-                    console.log('audio.mp3 has finished playing!');
-                    connection.disconnect();
-                });
-                dispatcher.on('error', console.error);
-            }
-            else {
-                console.log(message.member.voice.channel);
-                console.log("no channel?");
-            }
-        });
-    };
-});
-
-
-client.on('message', message => {
-    if (message.content.startsWith("!playAudioTwo")){
-        message.member.voice.channel.join()
-        .then(connection => { 
-          const dispatcher = connection.playFile(require("path").join(__dirname, './song.mp3'));
-      
-          dispatcher.on('start', () => { //not working
-              dispatcher.setVolume(0.70);
-              console.log("Playing");
-          }); 
-          dispatcher.on('error', (err) => console.log(err)); //no errors
-      
-              dispatcher.on('end', end => { //working fine
-                  console.log("Finished");
-                  console.log("End: " + end);
-                  message.member.voiceChannel.leave()
-              });
-            })
-        }
-        });
-
-/* 
+            VoiceConnection.play(songName).on("finish", () => 
+                VoiceConnection.disconnect());
+                message.reply("Playing...");
+        }).catch(err => 
+            console.log(err))
+};
 client.on('message', msg => {
     if (msg.content.startsWith("!randomBetween")){
     const args = msg.content.slice().trim().split(/ +/g);
@@ -369,7 +338,8 @@ client.on('message', msg => {
             console.error('ERR:', err)
         })
     }
-})*/
+})
+
 function checkTimeFunc(){
     if(date.getHours() == 17){
         client.channels.cache.get(channelTwoID).send('Welcome home from work Andrew. I hope it went well.');
