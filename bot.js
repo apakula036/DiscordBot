@@ -205,6 +205,9 @@ client.on('message', message => {
     else if (message.content == "!saveThatShit") {
         playSong("sounds/saveThatShit.ogg", message)
     }
+    else if (message.content == "!weDidIt") {
+        playSong("sounds/wedidit.mp4", message)
+    }
     else if (message.content === "!coinFlip") {
         const coin = 2;
         const randomNumber = Math.floor(Math.random() * 2);
@@ -235,7 +238,7 @@ client.on('message', message => {
     }
     else if (message.content === "!senddog") {
         message.channel.send("Doggo" + randomDog(message))
-        }
+    }
 });
 function playSong(songName, message){
         // Checking if the message author is in a voice channel.
@@ -323,7 +326,6 @@ client.on('message', msg => {//weather
         })
     }
 })
-
 function checkTimeFunc(){
     if(date.getHours() == 17){
         client.channels.cache.get(channelTwoID).send('Welcome home from work Andrew. I hope it went well.');
