@@ -51,24 +51,6 @@ client.on('ready', () => {
     greetings();
     readTweets();
 })
-client.on('message', msg => {//"!help"
-    if (msg.content === "!help") {
-        msg.reply('I can do !advice, !tweet "Your tweet here", !senddog, !eightball, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !sports, and !ping')
-        msg.react("👍")
-    }
-    else if(msg.content.startsWith("!tweet")){
-        const args = msg.content.slice().trim().split(/ +/g);
-        const theCommand = args.shift().toLowerCase();
-
-        var stringer = "";
-        for(i = 0; i < args.length; i++){
-            stringer = stringer + " " + args[i];
-        }
-        //console.log(stringer + "-the tweet content");
-        makeTweets(stringer); 
-        msg.reply('You tweeted: '+ stringer);
-    }
-})
 client.on('message', msg => {//dad bot 
     if ((msg.content.startsWith("Im")) || (msg.content.startsWith("I’m")) || (msg.content.startsWith("im")) || (msg.content.startsWith("i'm"))){
         const args = msg.content.slice().trim().split(/ +/g);
@@ -84,7 +66,10 @@ client.on('message', msg => {//dad bot
 client.on('message', message => {
     if (message.content === "!ping") {
         message.reply("Pong!")
-        message.react("❤️")
+        message.react("❤️") 
+    } else if (message.content === "!help") {
+        message.reply('I can do !advice, !tweet "Your tweet here", !senddog, !eightball, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !sports, and !ping')
+        message.react("👍")
     } else if (message.content === "!advice") {
         client.channels.cache.get(channelTwoID).send(giveAdvice())
     } else if (message.content.startsWith("!noteThis")){
@@ -138,6 +123,9 @@ client.on('message', message => {
     }
     else if (message.content.startsWith("!randomBetween")){
         randomBetween(message)
+    }
+    else if(message.content.startsWith("!tweet")){
+        getReadyForTweet(message)
     }
 });
 client.on('message', msg => {//weather
@@ -341,6 +329,16 @@ function getReadyToSaveToTextFile(message){
     }
     client.channels.cache.get(channelTwoID).send("Saved "+ stringer + " to the bots notepad!(my pc thanks)")
     saveToTextFile(stringer);
+}
+function getReadyForTweet(message){
+    const args = message.content.slice().trim().split(/ +/g);
+    const theCommand = args.shift().toLowerCase();
+    var stringer = "";
+    for(i = 0; i < args.length; i++){
+        stringer = stringer + " " + args[i];
+    }
+    makeTweets(stringer); 
+    message.reply('You tweeted: '+ stringer);
 }
 client.login(process.env.BOT_TOKEN)
 //npm run devStart
