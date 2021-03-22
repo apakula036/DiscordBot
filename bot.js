@@ -20,40 +20,31 @@ var T = new Twit({
   access_token:         process.env.ACCESS_TOKENAPI,
   access_token_secret:  process.env.ACCESS_TOKENAPI_SECRET,
 })
-function makeTweets(theTweet){
-    //Not looping anything to post again, not getting banned again also PS twitter devs if youre reading this dont ban me 
-    //EDIT: it almost got banned again seperate reason though 
-    T.post('statuses/update', { status: theTweet }, function(err, data, response) {
-        saveTweetID(data.id_str, theTweet);
-        data = " ";
-        theTweet = " ";
-    })
-}
-function saveTweetID(tweetID, theTweet){
-    fs.appendFile('mynewfile1.txt', "\r\n", function (err) {
-        if (err) throw err;
-        console.log('Saved!');
-      });
-    fs.appendFile('mynewfile1.txt', tweetID +"_"+ theTweet, function (err) {
-        if (err) throw err;
-        console.log('Saved!');
-      });
-}
-function readTweets(){
-    fs.stat('mynewfile1.txt', function (error, stats) { 
-        fs.open('mynewfile1.txt', "r", function (error, fd) { 
-            var buffer = new Buffer.alloc(stats.size); 
-            fs.read(fd, buffer, 0, buffer.length, 
-                null, function (error, bytesRead, buffer) { 
-                    var data = buffer.toString("utf8"); 
-                    console.log(data); 
-                    let arrayOfIds = [];
-                    arrayOfIds.push(data);
-                    console.log(arrayOfIds.length);//needs fix, seperate on _s each to get each item then make the array
-            }); 
-        });
-    });
-}
+//Variable declarations 
+const eightBallArray = [
+    "As I see it, yes.",
+    "Ask again later.",
+    "Better not tell you now.",
+    "Cannot predict now.",
+    "Concentrate and ask again.",
+    "Don't count on it.",
+    "It is certain.",
+    "It is decidedly so.",
+    "Most likely.",
+    "My reply is no.",
+    "My sources say no.",
+    "Outlook not so good.",
+    "Outlook good.",
+    "Reply hazy, try again.",
+    "Signs point to yes.",
+    "Very doubtful.",
+    "Without a doubt.",
+    "Yes.",
+    "Yes – definitely.",
+    "You may rely on it.",
+    "Eat my shorts."
+];
+var i;
 client.on('ready', () => {
     client.channels.cache.get(channelTwoID).send('Im Ready!');
     checkTimeFunc();
@@ -78,95 +69,6 @@ client.on('message', msg => {//"!help"
         msg.reply('You tweeted: '+ stringer);
     }
 })
-function randomDog(message){
-    axios.get("https://dog.ceo/api/breeds/image/random")
-    .then((res) => {
-        message.channel.send(res.data.message)
-    })
-    .catch((err) => {
-        console.error('ERR:', err)
-    })
-    return " "
-}
-function randomCat(message){
-    axios.get("https://api.thecatapi.com/v1/images/search")
-    .then((res) => {
-        //console.log('RES:', res.data[0].url)
-        message.channel.send(res.data[0].url)  
-    })
-    .catch((err) => {
-        console.error('ERR:', err)
-    })
-    return " "
-}
-client.on('message', msg => {//"!advice"
-    if (msg.content === "!advice") {
-        client.channels.cache.get(channelTwoID).send(giveAdvice())
-    } else if (msg.content.startsWith("!noteThis")){
-        const args = msg.content.slice().trim().split(/ +/g);
-        const theCommand = args.shift().toLowerCase();
-        //const theMessage = args[0];
-        var stringer = ""
-        for(i = 0; i < args.length; i++){
-            stringer = stringer + " " + args[i];
-        }
-        client.channels.cache.get(channelTwoID).send("Saved "+ stringer + " to the bots notepad!(my pc thanks)")
-        saveToTextFile(stringer);
-    }
-})
-function saveToTextFile(theMessage){
-    fs.appendFile('newFile2.txt', theMessage, function (err) {
-        if (err) throw err;
-        console.log(theMessage)
-        console.log('Saved!');
-    })
-}
-function giveAdvice(){
-    axios.get("https://api.adviceslip.com/advice")
-    .then((res) => {
-        //console.log('RES:', res.data.slip.advice)
-        client.channels.cache.get(channelTwoID).send(res.data.slip.advice)
-    })
-    .catch((err) => {
-        console.error('ERR:', err)
-    })
-    return " ";
-}
-function getTaco(){
-    axios.get("http://taco-randomizer.herokuapp.com/random/?full-taco=true")
-    .then((res) => {
-        console.log('RES:', res.data.base_layer.recipe)
-        client.channels.cache.get(channelTwoID).send(res.data.base_layer.recipe)
-    })
-    .catch((err) => {
-        console.error('ERR:', err)
-    })
-    return " ";
-}
-const eightBallArray = [
-        "As I see it, yes.",
-        "Ask again later.",
-        "Better not tell you now.",
-        "Cannot predict now.",
-        "Concentrate and ask again.",
-        "Don't count on it.",
-        "It is certain.",
-        "It is decidedly so.",
-        "Most likely.",
-        "My reply is no.",
-        "My sources say no.",
-        "Outlook not so good.",
-        "Outlook good.",
-        "Reply hazy, try again.",
-        "Signs point to yes.",
-        "Very doubtful.",
-        "Without a doubt.",
-        "Yes.",
-        "Yes – definitely.",
-        "You may rely on it.",
-        "Eat my shorts."
-];
-var i;
 client.on('message', msg => {//dad bot 
     if ((msg.content.startsWith("Im")) || (msg.content.startsWith("I’m")) || (msg.content.startsWith("im")) || (msg.content.startsWith("i'm"))){
         const args = msg.content.slice().trim().split(/ +/g);
@@ -183,32 +85,27 @@ client.on('message', message => {
     if (message.content === "!ping") {
         message.reply("Pong!")
         message.react("❤️")
-    }
-    else if (message.content == "!paulGilb") {
+    } else if (message.content === "!advice") {
+        client.channels.cache.get(channelTwoID).send(giveAdvice())
+    } else if (message.content.startsWith("!noteThis")){
+        getReadyToSaveToTextFile(message);
+    } else if (message.content == "!paulGilb") {
         playSong("sounds/song.mp3", message)
-    }
-    else if (message.content == "!ironManGuitarOnly") {
+    } else if (message.content == "!ironManGuitarOnly") {
         playSong("sounds/guitar.ogg", message)
-    }
-    else if (message.content == "!BFGDivision") {
+    } else if (message.content == "!BFGDivision") {
         playSong("sounds/BFGDivision", message)
-    }
-    else if (message.content == "!BritenyToxic") {
+    } else if (message.content == "!BritenyToxic") {
         playSong("sounds/BritenyToxic.ogg", message)
-    }
-    else if (message.content == "!C418DryHands") {
+    } else if (message.content == "!C418DryHands") {
         playSong("sounds/C418DryHands.ogg", message)
-    }
-    else if (message.content == "!C418WetHands") {
+    } else if (message.content == "!C418WetHands") {
         playSong("sounds/C418WetHands.ogg", message)
-    }
-    else if (message.content == "!saveThatShit") {
+    } else if (message.content == "!saveThatShit") {
         playSong("sounds/saveThatShit.ogg", message)
-    }
-    else if (message.content == "!weDidIt") {
+    } else if (message.content == "!weDidIt") {
         playSong("sounds/wedidit.mp4", message)
-    }
-    else if (message.content === "!coinFlip") {
+    } else if (message.content === "!coinFlip") {
         const coin = 2;
         const randomNumber = Math.floor(Math.random() * 2);
         if(randomNumber == 1){
@@ -239,29 +136,8 @@ client.on('message', message => {
     else if (message.content === "!senddog") {
         message.channel.send("Doggo" + randomDog(message))
     }
-});
-function playSong(songName, message){
-        // Checking if the message author is in a voice channel.
-        if (!message.member.voice.channel) 
-            return message.reply("You must be in a voice channel.");
-        // Checking if the bot is in a voice channel.
-        if (message.guild.me.voice.channel) 
-            return message.reply("I'm already playing.");
-        // Joining the channel and creating a VoiceConnection.
-        message.member.voice.channel.join().then(VoiceConnection => {
-            // Playing the music, and, on finish, disconnecting the bot.
-            VoiceConnection.play(songName).on("finish", () => 
-                VoiceConnection.disconnect());
-                message.reply("Playing...");
-        }).catch(err => 
-            console.log(err))
-};
-client.on('message', msg => {//randombetween
-    if (msg.content.startsWith("!randomBetween")){
-    const args = msg.content.slice().trim().split(/ +/g);
-    const command = args.shift().toLowerCase();   
-    const randomNumber = Math.floor(Math.random()* args[0]);
-    msg.channel.send("You randomed between "+args[0]+" and 0 to get "+ randomNumber);
+    else if (message.content.startsWith("!randomBetween")){
+        randomBetween(message)
     }
 });
 client.on('message', msg => {//weather
@@ -325,7 +201,24 @@ client.on('message', msg => {//weather
             console.error('ERR:', err)
         })
     }
-})
+});
+//Functions used when user sends command
+function playSong(songName, message){
+    // Checking if the message author is in a voice channel.
+    if (!message.member.voice.channel) 
+        return message.reply("You must be in a voice channel.");
+    // Checking if the bot is in a voice channel.
+    if (message.guild.me.voice.channel) 
+        return message.reply("I'm already playing.");
+    // Joining the channel and creating a VoiceConnection.
+    message.member.voice.channel.join().then(VoiceConnection => {
+        // Playing the music, and, on finish, disconnecting the bot.
+        VoiceConnection.play(songName).on("finish", () => 
+            VoiceConnection.disconnect());
+            message.reply("Playing...");
+    }).catch(err => 
+        console.log(err))
+};
 function checkTimeFunc(){
     if(date.getHours() == 17){
         client.channels.cache.get(channelTwoID).send('Welcome home from work Andrew. I hope it went well.');
@@ -346,6 +239,108 @@ function greetings(){
         console.log("checked after another hour its currently hour " + date.getHours());
         setTimeout(checkTimeFunc, 3600000);//one hour 
     }
+}
+function randomDog(message){
+    axios.get("https://dog.ceo/api/breeds/image/random")
+    .then((res) => {
+        message.channel.send(res.data.message)
+    })
+    .catch((err) => {
+        console.error('ERR:', err)
+    })
+    return " "
+}
+function randomCat(message){
+    axios.get("https://api.thecatapi.com/v1/images/search")
+    .then((res) => {
+        //console.log('RES:', res.data[0].url)
+        message.channel.send(res.data[0].url)  
+    })
+    .catch((err) => {
+        console.error('ERR:', err)
+    })
+    return " "
+}
+function makeTweets(theTweet){
+    //Not looping anything to post again, not getting banned again also PS twitter devs if youre reading this dont ban me 
+    //EDIT: it almost got banned again seperate reason though 
+    T.post('statuses/update', { status: theTweet }, function(err, data, response) {
+        saveTweetID(data.id_str, theTweet);
+        data = " ";
+        theTweet = " ";
+    })
+}
+function saveTweetID(tweetID, theTweet){
+    fs.appendFile('mynewfile1.txt', "\r\n", function (err) {
+        if (err) throw err;
+        console.log('Saved!');
+      });
+    fs.appendFile('mynewfile1.txt', tweetID +"_"+ theTweet, function (err) {
+        if (err) throw err;
+        console.log('Saved!');
+      });
+}
+function readTweets(){
+    fs.stat('mynewfile1.txt', function (error, stats) { 
+        fs.open('mynewfile1.txt', "r", function (error, fd) { 
+            var buffer = new Buffer.alloc(stats.size); 
+            fs.read(fd, buffer, 0, buffer.length, 
+                null, function (error, bytesRead, buffer) { 
+                    var data = buffer.toString("utf8"); 
+                    console.log(data); 
+                    let arrayOfIds = [];
+                    arrayOfIds.push(data);
+                    console.log(arrayOfIds.length);//needs fix, seperate on _s each to get each item then make the array
+            }); 
+        });
+    });
+}
+function randomBetween(message){
+    if (message.content.startsWith("!randomBetween")){
+        const args = message.content.slice().trim().split(/ +/g);
+        const command = args.shift().toLowerCase();   
+        const randomNumber = Math.floor(Math.random()* args[0]);
+        message.channel.send("You randomed between "+ args[0]+" and 0 to get "+ randomNumber);
+    }
+}
+function saveToTextFile(theMessage){
+    fs.appendFile('newFile2.txt', theMessage, function (err) {
+        if (err) throw err;
+        console.log(theMessage)
+        console.log('Saved!');
+    })
+}
+function giveAdvice(){
+    axios.get("https://api.adviceslip.com/advice")
+    .then((res) => {
+        //console.log('RES:', res.data.slip.advice)
+        client.channels.cache.get(channelTwoID).send(res.data.slip.advice)
+    })
+    .catch((err) => {
+        console.error('ERR:', err)
+    })
+    return " ";
+}
+function getTaco(){
+    axios.get("http://taco-randomizer.herokuapp.com/random/?full-taco=true")
+    .then((res) => {
+        console.log('RES:', res.data.base_layer.recipe)
+        client.channels.cache.get(channelTwoID).send(res.data.base_layer.recipe)
+    })
+    .catch((err) => {
+        console.error('ERR:', err)
+    })
+    return " ";
+}
+function getReadyToSaveToTextFile(message){
+    const args = message.content.slice().trim().split(/ +/g);
+    const theCommand = args.shift().toLowerCase();
+    var stringer = ""
+    for(i = 0; i < args.length; i++){
+        stringer = stringer + " " + args[i];
+    }
+    client.channels.cache.get(channelTwoID).send("Saved "+ stringer + " to the bots notepad!(my pc thanks)")
+    saveToTextFile(stringer);
 }
 client.login(process.env.BOT_TOKEN)
 //npm run devStart
