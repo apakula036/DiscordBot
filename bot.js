@@ -90,6 +90,14 @@ client.on('message', message => {
         playSong("sounds/saveThatShit.ogg", message)
     } else if (message.content == "!weDidIt") {
         playSong("sounds/wedidit.mp4", message)
+    } else if (message.content == "!balls") {
+        playSong("sounds/balls.mp3", message)
+    } else if (message.content == "!chunky") {
+        playSong("sounds/chunky.mp3", message)
+    } else if (message.content == "!grimReaper") {
+        playSong("sounds/grimreaper.mp3", message)
+    } else if (message.content == "!rain") {
+        playSong("sounds/rain.mp3", message)
     } else if (message.content === "!coinFlip") {
         const coin = 2;
         const randomNumber = Math.floor(Math.random() * 2);
