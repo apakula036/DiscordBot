@@ -44,6 +44,23 @@ const eightBallArray = [
     "You may rely on it.",
     "Eat my shorts."
 ];
+const soundArray = [
+    "sounds/song.mp3",
+    "sounds/balls.mp3",
+    "sounds/BFGDivision.ogg",
+    "sounds/BritenyToxic.ogg",
+    "sounds/C418DryHands.ogg",
+    "sounds/C418WetHands.ogg",
+    "sounds/chunky.mp3",
+    "sounds/grimreaper.mp3",
+    "sounds/guitar.ogg",
+    "sounds/ironMan.ogg",
+    "sounds/rain.mp3",
+    "sounds/saveThatShit.ogg",
+    "sounds/wedidit.mp4",
+    "sounds/wocky.mp3",
+    "sounds/wockyBass.mp3",
+];
 var i;
 client.on('ready', () => {
     client.channels.cache.get(channelTwoID).send('Im Ready!');
@@ -68,7 +85,8 @@ client.on('message', message => {
         message.reply("Pong!")
         message.react("❤️") 
     } else if (message.content === "!help") {
-        message.reply('I can do !advice, !tweet "Your tweet here", !senddog, !eightball, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !sports, and !ping')
+        message.reply('I can do a bunch of things including play sounds! Here is a list of what I can do, some of these are sounds and some are not!')
+        message.reply('!playRandomSound, !noteThis "your note here", !taco, !advice, !guitar, !tweet "Your tweet here", !BFGDivision, !paulGilb, !C418WetHands, !C418DryHands, !grimreaper, !rain, !ironManGuitarOnly, !senddog, !wedidit, !saveThatShit, !chunky, !eightball, !temperatureSports, !wockyBass, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !wocky, !sports, !balls, and !ping')
         message.react("👍")
     } else if (message.content === "!advice") {
         client.channels.cache.get(channelTwoID).send(giveAdvice())
@@ -98,6 +116,12 @@ client.on('message', message => {
         playSong("sounds/grimreaper.mp3", message)
     } else if (message.content == "!rain") {
         playSong("sounds/rain.mp3", message)
+    } else if (message.content == "!wocky") {
+        playSong("sounds/wocky.mp3", message)
+    } else if (message.content == "!wockyBASS") {
+        playSong("sounds/wockyBass.mp3", message)
+    } else if (message.content == "!playRandomSound") {
+        playRandom(message)
     } else if (message.content === "!coinFlip") {
         const coin = 2;
         const randomNumber = Math.floor(Math.random() * 2);
@@ -114,25 +138,20 @@ client.on('message', message => {
                 ] 
             });
         }
-    }
-    else if (message.content === "!eightball") {
+    } else if (message.content === "!eightball") {
         const randomNumber = Math.floor(Math.random()* eightBallArray.length);
         message.reply(eightBallArray[randomNumber])
         message.react("🎱")
-    }
-    else if (message.content === "!meow") {
+    } else if (message.content === "!meow") {
         message.channel.send("meow" + randomCat(message))
     }
     else if(message.content === "!taco") {
         message.reply(getTaco())
-    }
-    else if (message.content === "!senddog") {
+    } else if (message.content === "!senddog") {
         message.channel.send("Doggo" + randomDog(message))
-    }
-    else if (message.content.startsWith("!randomBetween")){
+    } else if (message.content.startsWith("!randomBetween")){
         randomBetween(message)
-    }
-    else if(message.content.startsWith("!tweet")){
+    }else if(message.content.startsWith("!tweet")){
         getReadyForTweet(message)
     }
 });
@@ -199,6 +218,10 @@ client.on('message', msg => {//weather
     }
 });
 //Functions used when user sends command
+function playRandom(message){
+    const randomNumber = Math.floor(Math.random()* soundArray.length);
+    playSong(soundArray[randomNumber], message)
+}
 function playSong(songName, message){
     // Checking if the message author is in a voice channel.
     if (!message.member.voice.channel) 
