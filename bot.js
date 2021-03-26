@@ -110,6 +110,7 @@ client.on('message', message => {
         playSong("sounds/wedidit.mp4", message)
     } else if (message.content == "!balls") {
         playSong("sounds/balls.mp3", message)
+        ballsCounter(message)
     } else if (message.content == "!chunky") {
         playSong("sounds/chunky.mp3", message)
     } else if (message.content == "!grimReaper") {
@@ -122,7 +123,10 @@ client.on('message', message => {
         playSong("sounds/wockyBass.mp3", message)
     } else if (message.content == "!playRandomSound") {
         playRandom(message)
-    } else if (message.content === "!coinFlip") {
+    } else if (message.content == "!ballCounter"){
+        ballChecker(message)
+    }
+    else if (message.content === "!coinFlip") {
         const coin = 2;
         const randomNumber = Math.floor(Math.random() * 2);
         if(randomNumber == 1){
@@ -328,6 +332,26 @@ function saveToTextFile(theMessage){
         console.log(theMessage)
         console.log('Saved!');
     })
+}
+function ballsCounter(message){
+    fs.readFile('ballsCounter.txt', function(err, data) {
+        console.log("this is a test to see what its at " + data)
+        //parseInt(data)
+        //console.log(data)
+        newData = parseInt(data) 
+        //console.log(data)
+        fs.appendFile('ballsCounter.txt', newData, function (err) {
+            if (err) throw err;
+            console.log('Saved!');
+        })
+    });
+}
+function ballChecker(message){
+    fs.readFile('ballsCounter.txt', function(err, data) {
+        console.log(data);
+        message.reply("The counter is at: " + data)
+        return data; 
+    });
 }
 function giveAdvice(){
     axios.get("https://api.adviceslip.com/advice")
