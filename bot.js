@@ -60,6 +60,8 @@ const soundArray = [
     "sounds/wedidit.mp4",
     "sounds/wocky.mp3",
     "sounds/wockyBass.mp3",
+    "sounds/mmm.mp3",
+    "sounds/sure.mp3",
 ];
 var i;
 client.on('ready', () => {
@@ -86,7 +88,7 @@ client.on('message', message => {
         message.react("❤️") 
     } else if (message.content === "!help") {
         message.reply('I can do a bunch of things including play sounds! Here is a list of what I can do, some of these are sounds and some are not!')
-        message.reply('!playRandomSound, !noteThis "your note here", !taco, !advice, !guitar, !tweet "Your tweet here", !BFGDivision, !paulGilb, !C418WetHands, !C418DryHands, !grimreaper, !rain, !ironManGuitarOnly, !senddog, !wedidit, !saveThatShit, !chunky, !eightball, !temperatureSports, !wockyBass, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !wocky, !sports, !balls, and !ping')
+        message.reply('!playRandomSound or !prs, !noteThis "your note here", !taco, !mmm, !sure, !advice, !guitar, !tweet "Your tweet here", !BFGDivision, !paulGilb, !C418WetHands, !C418DryHands, !grimreaper, !rain, !ironManGuitarOnly, !senddog, !wedidit, !saveThatShit, !chunky, !eightball, !temperatureSports, !wockyBass, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !wocky, !sports, !balls, and !ping')
         message.react("👍")
     } else if (message.content === "!advice") {
         client.channels.cache.get(channelTwoID).send(giveAdvice())
@@ -111,6 +113,8 @@ client.on('message', message => {
     } else if (message.content == "!balls") {
         playSong("sounds/balls.mp3", message)
         ballsCounter(message)
+    } else if (message.content == "!ballCounter"){
+        ballChecker(message)
     } else if (message.content == "!chunky") {
         playSong("sounds/chunky.mp3", message)
     } else if (message.content == "!grimReaper") {
@@ -121,10 +125,12 @@ client.on('message', message => {
         playSong("sounds/wocky.mp3", message)
     } else if (message.content == "!wockyBASS") {
         playSong("sounds/wockyBass.mp3", message)
-    } else if (message.content == "!playRandomSound") {
+    } else if ((message.content == "!playRandomSound") || (message.content == "!prs"))  {
         playRandom(message)
-    } else if (message.content == "!ballCounter"){
-        ballChecker(message)
+    } else if (message.content == "!mmm"){
+        playSong("sounds/mmm.mp3", message)
+    } else if (message.content == "!sure"){
+        playSong("sounds/sure.mp3", message)
     } else if (message.content == "!stop"){
         discBot(message)
     } else if (message.content === "!coinFlip") {
