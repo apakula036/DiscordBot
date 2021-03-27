@@ -97,7 +97,7 @@ client.on('message', message => {
     } else if (message.content == "!ironManGuitarOnly") {
         playSong("sounds/guitar.ogg", message)
     } else if (message.content == "!BFGDivision") {
-        playSong("sounds/BFGDivision", message)
+        playSong("sounds/BFGDivision.ogg", message)
     } else if (message.content == "!BritenyToxic") {
         playSong("sounds/BritenyToxic.ogg", message)
     } else if (message.content == "!C418DryHands") {
@@ -125,8 +125,9 @@ client.on('message', message => {
         playRandom(message)
     } else if (message.content == "!ballCounter"){
         ballChecker(message)
-    }
-    else if (message.content === "!coinFlip") {
+    } else if (message.content == "!stop"){
+        discBot(message)
+    } else if (message.content === "!coinFlip") {
         const coin = 2;
         const randomNumber = Math.floor(Math.random() * 2);
         if(randomNumber == 1){
@@ -242,6 +243,16 @@ function playSong(songName, message){
     }).catch(err => 
         console.log(err))
 };
+function discBot(message){
+    const empty = "";
+    message.member.voice.channel.join().then(VoiceConnection => {
+        // Playing the music, and, on finish, disconnecting the bot.
+        VoiceConnection.play(empty).on("finish", () => 
+            VoiceConnection.disconnect());
+            message.reply("Stopping...");
+    }).catch(err => 
+        console.log(err))
+}
 function checkTimeFunc(){
     if(date.getHours() == 17){
         client.channels.cache.get(channelTwoID).send('Welcome home from work Andrew. I hope it went well.');
