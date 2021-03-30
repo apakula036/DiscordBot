@@ -62,6 +62,16 @@ const soundArray = [
     "sounds/wockyBass.mp3",
     "sounds/mmm.mp3",
     "sounds/sure.mp3",
+    "sounds/xgames.mp3",
+    "sounds/stamos.mp3",
+    "sounds/wavefinger.mp3",
+    "sounds/picklerick.mp3",
+    "sounds/moseby.mp3",
+    "sounds/getdog.mp3",
+    "sounds/rick.mp3",
+    "sounds/trashkid.mp3",
+    "sounds/saytome.mp3",
+    "sounds/geton.mp3",
 ];
 var i;
 client.on('ready', () => {
@@ -69,18 +79,6 @@ client.on('ready', () => {
     checkTimeFunc();
     greetings();
     readTweets();
-})
-client.on('message', msg => {//dad bot 
-    if ((msg.content.startsWith("Im")) || (msg.content.startsWith("I’m")) || (msg.content.startsWith("im")) || (msg.content.startsWith("i'm"))){
-        const args = msg.content.slice().trim().split(/ +/g);
-        const theCommand = args.shift();
-        var stringer = "";
-        for(i = 0; i < args.length; i++){
-            stringer = stringer + " " + args[i];
-        }
-        msg.channel.send("Hi" + stringer + ", im HelpfulBot")
-        return;
-    }
 })
 client.on('message', message => {
     if (message.content === "!ping") {
@@ -115,7 +113,11 @@ client.on('message', message => {
         ballsCounter(message)
     } else if (message.content == "!ballCounter"){
         ballChecker(message)
-    } else if (message.content == "!chunky") {
+    } else if ((message.content.startsWith("Im")) || (message.content.startsWith("I’m")) || (message.content.startsWith("im")) || (message.content.startsWith("i'm"))){
+        dadBot(message)
+    } else if (message.includes("bro")){
+        broBot(message)
+    }else if (message.content == "!chunky") {
         playSong("sounds/chunky.mp3", message)
     } else if (message.content == "!grimReaper") {
         playSong("sounds/grimreaper.mp3", message)
@@ -147,8 +149,7 @@ client.on('message', message => {
         message.react("🎱")
     } else if (message.content === "!meow") {
         message.channel.send("meow" + randomCat(message))
-    }
-    else if(message.content === "!taco") {
+    } else if(message.content === "!taco") {
         message.reply(getTaco())
     } else if (message.content === "!senddog") {
         message.channel.send("Doggo" + randomDog(message))
@@ -179,6 +180,23 @@ function playSong(songName, message){
     }).catch(err => 
         console.log(err))
 };
+function dadBot(message){
+    const args = message.content.slice().trim().split(/ +/g);
+        const theCommand = args.shift();
+        var stringer = "";
+        for(i = 0; i < args.length; i++){
+            stringer = stringer + " " + args[i];
+        }
+        message.channel.send("Hi" + stringer + ", im HelpfulBot")
+        return;
+}
+function broBot(message){
+    const randomNumber = Math.floor(Math.random()* broArray.length);
+    message.channel.send("Wassup my fellow " + broArray[randomNumber] + ", im BROBOT")
+    message.react("😎")
+    message.react("💪")
+    return;
+}
 function temperatureSports(message){
     axios.get("http://api.openweathermap.org/data/2.5/weather?q=lockport,us&units=imperial&APPID=" + process.env.API_TOKEN_KEY)
         .then((res) => {  
