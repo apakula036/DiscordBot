@@ -115,9 +115,9 @@ client.on('message', message => {
         ballChecker(message)
     } else if ((message.content.startsWith("Im")) || (message.content.startsWith("I’m")) || (message.content.startsWith("im")) || (message.content.startsWith("i'm"))){
         dadBot(message)
-    } else if (message.includes("bro")){
+    } /*else if (message.contains("bro")){
         broBot(message)
-    }else if (message.content == "!chunky") {
+    }*/ else if (message.content == "!chunky") {
         playSong("sounds/chunky.mp3", message)
     } else if (message.content == "!grimReaper") {
         playSong("sounds/grimreaper.mp3", message)
