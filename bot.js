@@ -120,41 +120,41 @@ client.on('message', message => {
         ballChecker(message)
     } /*else if (message.contains("bro")){
         broBot(message)
-    }*/ else if (message.content == "!chunky") {
+    }*/ else if (theCommand == "!chunky") {
         playSong("sounds/chunky.mp3", message)
-    } else if (message.content == "!grimReaper") {
+    } else if (theCommand == "!grimreaper") {
         playSong("sounds/grimreaper.mp3", message)
-    } else if (message.content == "!rain") {
+    } else if (theCommand == "!rain") {
         playSong("sounds/rain.mp3", message)
-    } else if (message.content == "!wocky") {
+    } else if (theCommand == "!wocky") {
         playSong("sounds/wocky.mp3", message)
-    } else if (message.content == "!wockyBASS") {
+    } else if (theCommand == "!wockybass") {
         playSong("sounds/wockyBass.mp3", message)
-    } else if ((message.content == "!playRandomSound") || (message.content == "!prs"))  {
+    } else if ((theCommand == "!playRandomSound") || (theCommand == "!prs"))  {
         playRandom(message)
-    } else if (message.content == "!mmm"){
+    } else if (theCommand == "!mmm"){
         playSong("sounds/mmm.mp3", message)
-    } else if (message.content == "!sure"){
+    } else if (theCommand == "!sure"){
         playSong("sounds/sure.mp3", message)
-    } else if (message.content == "!stop"){
+    } else if (theCommand == "!stop"){
         discBot(message)
     } else if (message.content.startsWith("!weather")){
         giveWeather(message)
-    } else if(message.content === "!sports"){
+    } else if(theCommand === "!sports"){
         weatherSports(message)
-    } else if(message.content === "!temperatureSports"){
+    } else if(theCommand === "!temperaturesports"){
         temperatureSports(message)
-    } else if (message.content === "!coinFlip") {
+    } else if (theCommand === "!coinflip") {
         flipACoin(message)
-    } else if (message.content === "!eightball") {
+    } else if (theCommand === "!eightball") {
         eightBall(message)
-    } else if (message.content === "!meow") {
+    } else if (theCommand === "!meow") {
         message.channel.send("meow" + randomCat(message))
-    } else if(message.content === "!taco") {
+    } else if(theCommand === "!taco") {
         message.reply(getTaco())
-    } else if (message.content === "!senddog") {
+    } else if (theCommand === "!senddog") {
         message.channel.send("Doggo" + randomDog(message))
-    } else if (message.content.startsWith("!randomBetween")){
+    } else if (message.content.startsWith("!randombetween")){
         randomBetween(message)
     }else if(message.content.startsWith("!tweet")){
         getReadyForTweet(message)
