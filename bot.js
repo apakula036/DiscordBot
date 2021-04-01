@@ -11,7 +11,7 @@ const channelTwoID = process.env.GENERAL_TWOID;
 const channelOneID = process.env.GENERAL_ONEID;
 const yttl = require('ytdl-core');
 const YTSearcher = require('ytsearcher');
-
+const prefix = "!";
 //Twitter API Stuff
 var Twit = require('twit');
 var T = new Twit({
@@ -81,40 +81,43 @@ client.on('ready', () => {
     readTweets();
 })
 client.on('message', message => {
-    if (message.content === "!ping") {
+    if (!message.content.startsWith(prefix) || message.author.bot) return;
+    const args = message.content.slice().trim().split(/ +/g);
+    const theCommand = args.shift().toLowerCase();
+    console.log(theCommand)
+    if (theCommand === "!ping") {
+        console.log(theCommand)
         message.reply("Pong!")
-        message.react("❤️") 
+        message.react("❤️")
     } else if (message.content === "!help") {
         message.reply('I can do a bunch of things including play sounds! Here is a list of what I can do, some of these are sounds and some are not!')
         message.reply('!playRandomSound or !prs, !noteThis "your note here", !taco, !mmm, !sure, !advice, !guitar, !tweet "Your tweet here", !BFGDivision, !paulGilb, !C418WetHands, !C418DryHands, !grimreaper, !rain, !ironManGuitarOnly, !senddog, !wedidit, !saveThatShit, !chunky, !eightball, !temperatureSports, !wockyBass, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !wocky, !sports, !balls, and !ping')
         message.react("👍")
-    } else if (message.content === "!advice") {
-        client.channels.cache.get(channelTwoID).send(giveAdvice())
+    } else if (theCommand === "!advice") {
+        giveAdvice(message)//test this 
     } else if (message.content.startsWith("!noteThis")){
         getReadyToSaveToTextFile(message);
-    } else if (message.content == "!paulGilb") {
+    } else if (theCommand == "!paulgilb") {
         playSong("sounds/song.mp3", message)
-    } else if (message.content == "!ironManGuitarOnly") {
+    } else if (theCommand == "!ironmanguitaronly") {
         playSong("sounds/guitar.ogg", message)
-    } else if (message.content == "!BFGDivision") {
+    } else if (theCommand == "!bfgdivision") {
         playSong("sounds/BFGDivision.ogg", message)
-    } else if (message.content == "!BritenyToxic") {
+    } else if (theCommand == "!britenytoxic") {
         playSong("sounds/BritenyToxic.ogg", message)
-    } else if (message.content == "!C418DryHands") {
-        playSong("sounds/C418DryHands.ogg", message)
-    } else if (message.content == "!C418WetHands") {
+    } else if (theCommand == "!C418DryHands") {
+        playSong("sounds/c418dryhands.ogg", message)
+    } else if (theCommand == "!c418wethands") {
         playSong("sounds/C418WetHands.ogg", message)
-    } else if (message.content == "!saveThatShit") {
+    } else if (theCommand == "!saveThatShit") {
         playSong("sounds/saveThatShit.ogg", message)
-    } else if (message.content == "!weDidIt") {
+    } else if (theCommand == "!wedidit") {
         playSong("sounds/wedidit.mp4", message)
-    } else if (message.content == "!balls") {
+    } else if (theCommand == "!balls") {
         playSong("sounds/balls.mp3", message)
         ballsCounter(message)
-    } else if (message.content == "!ballCounter"){
+    } else if (theCommand == "!ballcounter"){
         ballChecker(message)
-    } else if ((message.content.startsWith("Im")) || (message.content.startsWith("I’m")) || (message.content.startsWith("im")) || (message.content.startsWith("i'm"))){
-        dadBot(message)
     } /*else if (message.contains("bro")){
         broBot(message)
     }*/ else if (message.content == "!chunky") {
@@ -144,9 +147,7 @@ client.on('message', message => {
     } else if (message.content === "!coinFlip") {
         flipACoin(message)
     } else if (message.content === "!eightball") {
-        const randomNumber = Math.floor(Math.random()* eightBallArray.length);
-        message.reply(eightBallArray[randomNumber])
-        message.react("🎱")
+        eightBall(message)
     } else if (message.content === "!meow") {
         message.channel.send("meow" + randomCat(message))
     } else if(message.content === "!taco") {
@@ -159,10 +160,21 @@ client.on('message', message => {
         getReadyForTweet(message)
     }
 });
+
+client.on('message', message => {
+    if ((message.content.startsWith("I'm")) || (message.content.startsWith("Im")) || (message.content.startsWith("I’m")) || (message.content.startsWith("im")) || (message.content.startsWith("i'm"))){
+        dadBot(message)
+    }
+});
 //---------------------Functionsssssssssssssssssssssssssss-------------------------
 function playRandom(message){
     const randomNumber = Math.floor(Math.random()* soundArray.length);
     playSong(soundArray[randomNumber], message)
+}
+function eightBall(message){
+    const randomNumber = Math.floor(Math.random()* eightBallArray.length);
+    message.reply(eightBallArray[randomNumber])
+    message.react("🎱")
 }
 function playSong(songName, message){
     // Checking if the message author is in a voice channel.
@@ -296,7 +308,7 @@ function greetings(){
     if(date.getHours() == 7) {
         console.log("7am");
         client.channels.cache.get(channelOneID).send('Good morning, everyone!.');
-        giveAdvice();
+        giveAdvice(message);
     } else if (date.getHours() == 0) {
         console.log("midnight");
         client.channels.cache.get(channelTwoID).send("Goodnight, everyone.");
@@ -395,11 +407,11 @@ function ballChecker(message){
         return data; 
     });
 }
-function giveAdvice(){
+function giveAdvice(message){
     axios.get("https://api.adviceslip.com/advice")
     .then((res) => {
         //console.log('RES:', res.data.slip.advice)
-        client.channels.cache.get(channelTwoID).send(res.data.slip.advice)
+        message.reply(res.data.slip.advice)
     })
     .catch((err) => {
         console.error('ERR:', err)
