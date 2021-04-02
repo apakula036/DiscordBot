@@ -91,7 +91,7 @@ client.on('message', message => {
         message.react("❤️")
     } else if (message.content === "!help") {
         message.reply('I can do a bunch of things including play sounds! Here is a list of what I can do, some of these are sounds and some are not!')
-        message.reply('!playRandomSound or !prs, !noteThis "your note here", !taco, !mmm, !sure, !advice, !guitar, !tweet "Your tweet here", !BFGDivision, !paulGilb, !C418WetHands, !C418DryHands, !grimreaper, !rain, !ironManGuitarOnly, !senddog, !wedidit, !saveThatShit, !chunky, !eightball, !temperatureSports, !wockyBass, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !wocky, !sports, !balls, and !ping')
+        message.reply('!playRandomSound or !prs, !noteThis "your note here", !milk, !taco, !mmm, !sure, !advice, !guitar, !tweet "Your tweet here", !BFGDivision, !paulGilb, !C418WetHands, !C418DryHands, !grimreaper, !rain, !ironManGuitarOnly, !senddog, !wedidit, !saveThatShit, !chunky, !eightball, !temperatureSports, !wockyBass, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !wocky, !sports, !balls, and !ping')
         message.react("👍")
     } else if (theCommand === "!advice") {
         giveAdvice(message)//test this 
@@ -136,6 +136,8 @@ client.on('message', message => {
         playSong("sounds/mmm.mp3", message)
     } else if (theCommand == "!sure"){
         playSong("sounds/sure.mp3", message)
+    } else if (theCommand == "!milk"){
+        playSong("sounds/milk.mp3", message)
     } else if (theCommand == "!stop"){
         discBot(message)
     } else if (message.content.startsWith("!weather")){
@@ -398,6 +400,13 @@ function ballsCounter(message){
             if (err) throw err;
             console.log('Saved!');
         })
+    });
+}
+function counter(){
+    fetch("ballsCounter.txt")
+    .then(function(response) { return response.text; })
+    .then(function(text) {
+      var num = parseInt(text);
     });
 }
 function ballChecker(message){
