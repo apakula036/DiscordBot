@@ -111,6 +111,8 @@ client.on('message', message => {
         playSong("sounds/C418WetHands.ogg", message)
     } else if (theCommand == "!saveThatShit") {
         playSong("sounds/saveThatShit.ogg", message)
+    } else if (theCommand == "!trash") {
+        playSong("sounds/trashkid.mp3", message)
     } else if (theCommand == "!wedidit") {
         playSong("sounds/wedidit.mp4", message)
     } else if (theCommand == "!balls") {
