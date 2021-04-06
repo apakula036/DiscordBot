@@ -79,6 +79,7 @@ client.on('ready', () => {
     checkTimeFunc();
     greetings();
     readTweets();
+    readNotes();
 })
 client.on('message', message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
@@ -109,7 +110,7 @@ client.on('message', message => {
         playSong("sounds/c418dryhands.ogg", message)
     } else if (theCommand == "!c418wethands") {
         playSong("sounds/C418WetHands.ogg", message)
-    } else if (theCommand == "!saveThatShit") {
+    } else if (theCommand == "!savethatshit") {
         playSong("sounds/saveThatShit.ogg", message)
     } else if (theCommand == "!trash") {
         playSong("sounds/trashkid.mp3", message)
@@ -364,6 +365,21 @@ function saveTweetID(tweetID, theTweet){
 function readTweets(){
     fs.stat('mynewfile1.txt', function (error, stats) { 
         fs.open('mynewfile1.txt', "r", function (error, fd) { 
+            var buffer = new Buffer.alloc(stats.size); 
+            fs.read(fd, buffer, 0, buffer.length, 
+                null, function (error, bytesRead, buffer) { 
+                    var data = buffer.toString("utf8"); 
+                    console.log(data); 
+                    let arrayOfIds = [];
+                    arrayOfIds.push(data);
+                    console.log(arrayOfIds.length);//needs fix, seperate on _s each to get each item then make the array
+            }); 
+        });
+    });
+}
+function readNotes(){
+    fs.stat('newFile2.txt', function (error, stats) { 
+        fs.open('newFile2.txt', "r", function (error, fd) { 
             var buffer = new Buffer.alloc(stats.size); 
             fs.read(fd, buffer, 0, buffer.length, 
                 null, function (error, bytesRead, buffer) { 
