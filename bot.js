@@ -80,6 +80,7 @@ client.on('ready', () => {
     greetings();
     readTweets();
     readNotes();
+    testReadFileArray();
 })
 client.on('message', message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
@@ -387,6 +388,25 @@ function readNotes(){
                     console.log(data); 
                     let arrayOfIds = [];
                     arrayOfIds.push(data);
+                    console.log(arrayOfIds.length);//needs fix, seperate on _s each to get each item then make the array
+            }); 
+        });
+    });
+}
+function testReadFileArray(){
+    fs.stat('testfile.txt', function (error, stats) { 
+        fs.open('testfile.txt', "r", function (error, fd) { 
+            var buffer = new Buffer.alloc(stats.size); 
+            fs.read(fd, buffer, 0, buffer.length, 
+                null, function (error, bytesRead, buffer) { 
+                    var data = buffer.toString("utf8"); 
+                    console.log(data); 
+                    let arrayOfIds = [];
+                    arrayOfIds.push(data);
+                    const randomNumber = Math.floor(Math.random() * arrayOfIds.length);
+                    for (i = 0; i < arrayOfIds.length; i++) {
+                        console.log(arrayOfIds.slice().trim())
+                    }
                     console.log(arrayOfIds.length);//needs fix, seperate on _s each to get each item then make the array
             }); 
         });
