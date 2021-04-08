@@ -400,14 +400,19 @@ function testReadFileArray(){
             fs.read(fd, buffer, 0, buffer.length, 
                 null, function (error, bytesRead, buffer) { 
                     var data = buffer.toString("utf8"); 
-                    console.log(data); 
+                    //console.log(data); 
                     let arrayOfIds = [];
                     arrayOfIds.push(data);
                     const randomNumber = Math.floor(Math.random() * arrayOfIds.length);
                     for (i = 0; i < arrayOfIds.length; i++) {
-                        console.log(arrayOfIds.slice().trim())
+                        console.log(arrayOfIds[i].slice())
+                        var testVar = arrayOfIds[i].slice()
+                        console.log(arrayOfIds[randomNumber])
                     }
-                    console.log(arrayOfIds.length);//needs fix, seperate on _s each to get each item then make the array
+                    client.channels.cache.get(channelTwoID).send(arrayOfIds[randomNumber])
+                    console.log("test under")
+                    console.log(arrayOfIds[randomNumber])
+                    //console.log(arrayOfIds.length);//needs fix, seperate on _s each to get each item then make the array
             }); 
         });
     });
