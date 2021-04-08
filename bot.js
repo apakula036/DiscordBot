@@ -407,11 +407,12 @@ function testReadFileArray(){
                     for (i = 0; i < arrayOfIds.length; i++) {
                         console.log(arrayOfIds[i].slice())
                         var testVar = arrayOfIds[i].slice()
-                        console.log(arrayOfIds[randomNumber])
+                        console.log("test under")
+                        console.log(testVar[1])
                     }
-                    client.channels.cache.get(channelTwoID).send(arrayOfIds[randomNumber])
-                    console.log("test under")
-                    console.log(arrayOfIds[randomNumber])
+                    //client.channels.cache.get(channelTwoID).send(arrayOfIds[randomNumber])
+                    //console.log("test under")
+                    //console.log(arrayOfIds[randomNumber])
                     //console.log(arrayOfIds.length);//needs fix, seperate on _s each to get each item then make the array
             }); 
         });
