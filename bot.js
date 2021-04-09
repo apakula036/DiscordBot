@@ -146,6 +146,8 @@ client.on('message', message => {
         discBot(message)
     } else if (message.content.startsWith("!weather")){
         giveWeather(message)
+    } else if (theCommand === "!randomnote"){
+        randomNote()
     } else if(theCommand === "!sports"){
         weatherSports(message)
     } else if(theCommand === "!temperaturesports"){
@@ -393,7 +395,7 @@ function readNotes(){
         });
     });
 }
-function testReadFileArray(){
+function randomNote(){
     fs.stat('testfile.txt', function (error, stats) { 
         fs.open('testfile.txt', "r", function (error, fd) { 
             var buffer = new Buffer.alloc(stats.size); 
