@@ -142,6 +142,8 @@ client.on('message', message => {
         playSong("sounds/sure.mp3", message)
     } else if (theCommand == "!milk"){
         playSong("sounds/milk.mp3", message)
+    }else if (theCommand == "!xgames"){
+        playSong("sounds/xgames.mp3", message)
     } else if (theCommand == "!stop"){
         discBot(message)
     } else if (message.content.startsWith("!weather")){
