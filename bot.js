@@ -93,7 +93,7 @@ client.on('message', message => {
         message.react("❤️")
     } else if (message.content === "!help") {
         message.reply('I can do a bunch of things including play sounds! Here is a list of what I can do, some of these are sounds and some are not!')
-        message.reply('!playRandomSound or !prs, !noteThis "your note here", !milk, !taco, !mmm, !sure, !advice, !guitar, !tweet "Your tweet here", !BFGDivision, !paulGilb, !C418WetHands, !C418DryHands, !grimreaper, !rain, !ironManGuitarOnly, !senddog, !wedidit, !saveThatShit, !chunky, !eightball, !temperatureSports, !wockyBass, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !wocky, !sports, !balls, and !ping')
+        message.reply('!playRandomSound or !prs, !noteThis "your note here", !milk, !taco, !mmm, !sure, !advice, !stamos, !xgames, !wavefinger, !guitar, !tweet "Your tweet here", !BFGDivision, !paulGilb, !C418WetHands, !C418DryHands, !grimreaper, !rain, !ironManGuitarOnly, !senddog, !wedidit, !saveThatShit, !chunky, !eightball, !temperatureSports, !wockyBass, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !wocky, !sports, !balls, and !ping')
         message.react("👍")
     } else if (theCommand === "!advice") {
         giveAdvice(message)//test this 
@@ -144,8 +144,10 @@ client.on('message', message => {
         playSong("sounds/sure.mp3", message)
     } else if (theCommand == "!milk"){
         playSong("sounds/milk.mp3", message)
-    }else if (theCommand == "!xgames"){
-        playSong("sounds/xgames.mp3", message)
+    } else if (theCommand == "!xgames"){
+        playSong("sounds/xgames.mp3", message)    
+    } else if (theCommand == "!wavefinger"){
+        playSong("sounds/wavefinger.mp3", message)
     } else if (theCommand == "!stop"){
         discBot(message)
     } else if (message.content.startsWith("!weather")){
