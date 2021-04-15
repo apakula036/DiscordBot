@@ -148,6 +148,8 @@ client.on('message', message => {
         playSong("sounds/milk.mp3", message)
     } else if (theCommand == "!xgames"){
         playSong("sounds/xgames.mp3", message)    
+    } else if (theCommand == "!saytome"){
+        playSong("sounds/saytome.mp3", message)    
     } else if (theCommand == "!wavefinger"){
         playSong("sounds/wavefinger.mp3", message)
     } else if (theCommand == "!stop"){
