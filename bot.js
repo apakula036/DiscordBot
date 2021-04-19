@@ -72,6 +72,29 @@ const soundArray = [
     "sounds/trashkid.mp3",
     "sounds/saytome.mp3",
     "sounds/geton.mp3",
+    "sounds/milk.mp3"
+];
+const shortSoundArray = [
+    "sounds/balls.mp3",
+    "sounds/chunky.mp3",
+    "sounds/grimreaper.mp3",
+    "sounds/rain.mp3",
+    "sounds/wedidit.mp4",
+    "sounds/wocky.mp3",
+    "sounds/wockyBass.mp3",
+    "sounds/mmm.mp3",
+    "sounds/sure.mp3",
+    "sounds/xgames.mp3",
+    "sounds/stamos.mp3",
+    "sounds/wavefinger.mp3",
+    "sounds/picklerick.mp3",
+    "sounds/moseby.mp3",
+    "sounds/getdog.mp3",
+    "sounds/rick.mp3",
+    "sounds/trashkid.mp3",
+    "sounds/saytome.mp3",
+    "sounds/geton.mp3",
+    "sounds/milk.mp3",
 ];
 var i;
 client.on('ready', () => {
@@ -93,11 +116,11 @@ client.on('message', message => {
         message.react("❤️")
     } else if (message.content === "!help") {
         message.reply('I can do a bunch of things including play sounds! Here is a list of what I can do, some of these are sounds and some are not!')
-        message.reply('!playRandomSound or !prs, !noteThis "your note here", !milk, !taco, !mmm, !sure, !advice, !stamos, !xgames, !wavefinger, !guitar, !tweet "Your tweet here", !BFGDivision, !paulGilb, !C418WetHands, !C418DryHands, !grimreaper, !rain, !ironManGuitarOnly, !senddog, !wedidit, !saveThatShit, !chunky, !eightball, !temperatureSports, !wockyBass, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !wocky, !sports, !balls, and !ping')
+        message.reply('!playRandomSound or !prs, !playShortSound or !prss !noteThis "your note here", !milk, !taco, !mmm, !sure, !advice, !stamos, !xgames, !wavefinger, !guitar, !tweet "Your tweet here", !BFGDivision, !paulGilb, !C418WetHands, !C418DryHands, !grimreaper, !rain, !ironManGuitarOnly, !senddog, !wedidit, !saveThatShit, !chunky, !eightball, !temperatureSports, !wockyBass, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !wocky, !sports, !balls, and !ping')
         message.react("👍")
     } else if (theCommand === "!advice") {
         giveAdvice(message)//test this 
-    } else if (message.content.startsWith("!noteThis")){
+    } else if (message.content.startsWith("!notethis")){
         getReadyToSaveToTextFile(message);
     } else if (theCommand == "!paulgilb") {
         playSong("sounds/song.mp3", message)
@@ -107,7 +130,7 @@ client.on('message', message => {
         playSong("sounds/BFGDivision.ogg", message)
     } else if (theCommand == "!britenytoxic") {
         playSong("sounds/BritenyToxic.ogg", message)
-    } else if (theCommand == "!C418DryHands") {
+    } else if (theCommand == "!c418dryhands") {
         playSong("sounds/c418dryhands.ogg", message)
     } else if (theCommand == "!c418wethands") {
         playSong("sounds/C418WetHands.ogg", message)
@@ -117,6 +140,8 @@ client.on('message', message => {
         playSong("sounds/rocketleague.mp3", message)
     } else if (theCommand == "!trash") {
         playSong("sounds/trashkid.mp3", message)
+    } else if (theCommand == "!dog") {
+        playSong("sounds/getdog.mp3", message)
     } else if (theCommand == "!wedidit") {
         playSong("sounds/wedidit.mp4", message)
     }else if (theCommand == "!picklerick") {
@@ -140,7 +165,7 @@ client.on('message', message => {
         playSong("sounds/wocky.mp3", message)
     } else if (theCommand == "!wockybass") {
         playSong("sounds/wockyBass.mp3", message)
-    } else if ((theCommand == "!playRandomSound") || (theCommand == "!prs"))  {
+    } else if ((theCommand == "!playrandomsound") || (theCommand == "!prs"))  {
         playRandom(message)
     } else if (theCommand == "!mmm"){
         playSong("sounds/mmm.mp3", message)
@@ -179,6 +204,8 @@ client.on('message', message => {
     } else if (message.content.startsWith("!randombetween")){
         randomBetween(message)
     }else if(message.content.startsWith("!tweet")){
+        getReadyForTweet(message)
+    } else if((theCommand == "!playshortsound") || (theCommand == "!prss")){
         getReadyForTweet(message)
     }
 });
