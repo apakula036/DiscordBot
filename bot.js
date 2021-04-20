@@ -118,7 +118,7 @@ client.on('message', message => {
         message.react("❤️")
     } else if (message.content === "!help") {
         message.reply('I can do a bunch of things including play sounds! Here is a list of what I can do, some of these are sounds and some are not!')
-        message.reply('!playRandomSound or !prs, !playShortSound or !prss !noteThis "your note here", !milk, !taco, !mmm, !sure, !rl3s, !rocketLeagueTrackerHelp, !advice, !stamos, !xgames, !wavefinger, !guitar, !tweet "Your tweet here", !BFGDivision, !paulGilb, !C418WetHands, !C418DryHands, !grimreaper, !rain, !ironManGuitarOnly, !senddog, !wedidit, !saveThatShit, !chunky, !eightball, !temperatureSports, !wockyBass, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !wocky, !sports, !balls, and !ping')
+        message.reply('!playRandomSound or !prs, !playShortSound or !prss !noteThis "your note here", !milk, !taco, !mmm, !sure, !rlranks "your steam ID here", !rocketLeagueTrackerHelp, !advice, !stamos, !xgames, !wavefinger, !guitar, !tweet "Your tweet here", !BFGDivision, !paulGilb, !C418WetHands, !C418DryHands, !grimreaper, !rain, !ironManGuitarOnly, !senddog, !wedidit, !saveThatShit, !chunky, !eightball, !temperatureSports, !wockyBass, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !wocky, !sports, !balls, and !ping')
         message.react("👍")
     } else if (theCommand === "!advice") {
         giveAdvice(message)//test this 
@@ -212,7 +212,7 @@ client.on('message', message => {
     } else if(theCommand === "!rlbeef3s"){
         message.reply("Working on it! Please wait a second, theres a bit going on behind the scenes because RL doesnt want to make this easy!")
         scrapeText('https://rocketleague.tracker.network/rocket-league/profile/steam/76561198010412811/overview', '//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[4]/td[2]/div[2]', message)
-    } else if(message.content.startsWith("!rl3s")){
+    } else if(message.content.startsWith("!rlranks")){
         rlScrapeFunction(message)
     } else if (theCommand == "!rocketleaguetrackerhelp") {
         message.reply("Hello! To use the tracker you'll need to do a couple things first. Sign in with your steam account to link it to the tracker here: https://rocketleague.tracker.network/")
@@ -589,11 +589,11 @@ async function scrapeThirdAndFourth(url, message){
     const page = await browser.newPage();
     await page.goto(url);
     //2nd row title
-    const [el5] = await page.$x('//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div/div[3]/div[1]/div[2]/div[2]/table/tbody/tr[2]/td[2]/div[1]');
+    const [el5] = await page.$x('/html/body/div/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[2]/td[2]/div[1]/text()');
     const txtFive = await el5.getProperty('textContent');
     const titleThree = await txtFive.jsonValue();
     //2nd row title
-    const [el6] = await page.$x('//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div/div[3]/div[1]/div[2]/div[2]/table/tbody/tr[2]/td[2]/div[2]');
+    const [el6] = await page.$x('//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[2]/td[2]/div[2]');
     const txtSix = await el6.getProperty('textContent');
     const rankThree = await txtSix.jsonValue();
     //3rd row rank
@@ -613,7 +613,7 @@ async function scrapeThirdAndFourth(url, message){
     const txtFour = await el4.getProperty('textContent');
     const rankTwo = await txtFour.jsonValue();
 
-    console.log(titleOne + rankOne +  titleTwo + rankTwo)
+    console.log(titleThree + rankThree + titleOne + rankOne +  titleTwo + rankTwo)
     //console.log({rank} + {rank2}); //log to make sure it works 
     message.reply(titleThree + rankThree + "\n" + titleOne + rankOne + "\n" + titleTwo + rankTwo);
     browser.close();
