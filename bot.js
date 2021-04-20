@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 var fs = require('fs');
+const puppeteer = require('puppeteer');
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const axios = require('axios');
@@ -14,6 +15,7 @@ const YTSearcher = require('ytsearcher');
 const prefix = "!";
 //Twitter API Stuff
 var Twit = require('twit');
+const { title } = require("process");
 var T = new Twit({
   consumer_key:         process.env.CONSUMER_KEYAPI,
   consumer_secret:      process.env.CONSUMER_KEYAPI_SECRET,
@@ -116,7 +118,7 @@ client.on('message', message => {
         message.react("❤️")
     } else if (message.content === "!help") {
         message.reply('I can do a bunch of things including play sounds! Here is a list of what I can do, some of these are sounds and some are not!')
-        message.reply('!playRandomSound or !prs, !playShortSound or !prss !noteThis "your note here", !milk, !taco, !mmm, !sure, !advice, !stamos, !xgames, !wavefinger, !guitar, !tweet "Your tweet here", !BFGDivision, !paulGilb, !C418WetHands, !C418DryHands, !grimreaper, !rain, !ironManGuitarOnly, !senddog, !wedidit, !saveThatShit, !chunky, !eightball, !temperatureSports, !wockyBass, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !wocky, !sports, !balls, and !ping')
+        message.reply('!playRandomSound or !prs, !playShortSound or !prss !noteThis "your note here", !milk, !taco, !mmm, !sure, !rl3s, !rocketLeagueTrackerHelp, !advice, !stamos, !xgames, !wavefinger, !guitar, !tweet "Your tweet here", !BFGDivision, !paulGilb, !C418WetHands, !C418DryHands, !grimreaper, !rain, !ironManGuitarOnly, !senddog, !wedidit, !saveThatShit, !chunky, !eightball, !temperatureSports, !wockyBass, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !wocky, !sports, !balls, and !ping')
         message.react("👍")
     } else if (theCommand === "!advice") {
         giveAdvice(message)//test this 
@@ -203,11 +205,20 @@ client.on('message', message => {
         message.channel.send("Doggo" + randomDog(message))
     } else if (message.content.startsWith("!randombetween")){
         randomBetween(message)
-    }else if(message.content.startsWith("!tweet")){
+    } else if(message.content.startsWith("!tweet")){
         getReadyForTweet(message)
     } else if((theCommand == "!playshortsound") || (theCommand == "!prss")){
         getReadyForTweet(message)
+    } else if(theCommand === "!rlbeef3s"){
+        message.reply("Working on it! Please wait a second, theres a bit going on behind the scenes because RL doesnt want to make this easy!")
+        scrapeText('https://rocketleague.tracker.network/rocket-league/profile/steam/76561198010412811/overview', '//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[4]/td[2]/div[2]', message)
+    } else if(message.content.startsWith("!rl3s")){
+        rlScrapeFunction(message)
+    } else if (theCommand == "!rocketleaguetrackerhelp") {
+        message.reply("Hello! To use the tracker you'll need to do a couple things first. Sign in with your steam account to link it to the tracker here: https://rocketleague.tracker.network/")
+        message.reply("After you have connected your account, give it some games, time, and refresh a few times so that the data is correct and current. After that you should be good to go! Use the command !rl3s 'your steam ID here' to get your rank! Because RocketLeague wants to make it harder still, the tracker seems to flip flop the data so I have to grab your hoops rank as well, oh well lol! \nFor a bonus tip go to your Steam profile and change the URL to a custom one thats easier to remember rather than a bunch of numbers. Thank you Trevor!!")
     }
+    
 });
 
 client.on('message', message => {
@@ -544,6 +555,68 @@ function getReadyForTweet(message){
     }
     makeTweets(stringer); 
     message.reply('You tweeted: '+ stringer);
+}
+
+function rlScrapeFunction(message){
+    const id = message.content.slice().trim().split(/ +/g);
+    console.log(id[1]);
+    message.reply("Working on it! Please wait a second, theres a bit going on behind the scenes because RL doesnt want to make this easy!");
+    //scrapeText('https://rocketleague.tracker.network/rocket-league/profile/steam/' + id[1] + '/overview', '//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[4]/td[2]/div[2]', message)
+    scrapeThirdAndFourth('https://rocketleague.tracker.network/rocket-league/profile/steam/' + id[1] + '/overview', message)
+}
+/*
+async function scrapeText(url, item, message){
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.goto(url);
+    //3rd row
+    const [el2] = await page.$x(item);
+    const txt = await el2.getProperty('textContent');
+    const rank = await txt.jsonValue();
+    //4th row 
+    const [el2] = await page.$x(item);
+    const txt = await el2.getProperty('textContent');
+    const rank = await txt.jsonValue();
+
+
+
+    console.log({rank} + {rank2}); //log to make sure it works 
+    message.reply(rank + rank2);
+    browser.close();
+}*/
+async function scrapeThirdAndFourth(url, message){
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.goto(url);
+    //2nd row title
+    const [el5] = await page.$x('//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div/div[3]/div[1]/div[2]/div[2]/table/tbody/tr[2]/td[2]/div[1]');
+    const txtFive = await el5.getProperty('textContent');
+    const titleThree = await txtFive.jsonValue();
+    //2nd row title
+    const [el6] = await page.$x('//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div/div[3]/div[1]/div[2]/div[2]/table/tbody/tr[2]/td[2]/div[2]');
+    const txtSix = await el6.getProperty('textContent');
+    const rankThree = await txtSix.jsonValue();
+    //3rd row rank
+    const [el1] = await page.$x("/html/body/div/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[3]/td[2]/div[1]/text()");
+    const txtOne = await el1.getProperty('textContent');
+    const titleOne = await txtOne.jsonValue();
+    //3rd row rank 
+    const [el2] = await page.$x('//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[3]/td[2]/div[2]');
+    const txtTwo = await el2.getProperty('textContent');
+    const rankOne = await txtTwo.jsonValue();
+    //4th row title
+    const [el3] = await page.$x('//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[4]/td[2]/div[1]/text()');
+    const txtThree = await el3.getProperty('textContent');
+    const titleTwo = await txtThree.jsonValue();
+    //4th row rank 
+    const [el4] = await page.$x('//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[4]/td[2]/div[2]');
+    const txtFour = await el4.getProperty('textContent');
+    const rankTwo = await txtFour.jsonValue();
+
+    console.log(titleOne + rankOne +  titleTwo + rankTwo)
+    //console.log({rank} + {rank2}); //log to make sure it works 
+    message.reply(titleThree + rankThree + "\n" + titleOne + rankOne + "\n" + titleTwo + rankTwo);
+    browser.close();
 }
 client.login(process.env.BOT_TOKEN)
 //npm run devStart

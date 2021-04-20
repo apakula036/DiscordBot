@@ -17,6 +17,7 @@
     "dotenv": "^8.2.0",
     "ffmpeg-static": "^4.2.7",
     "jquery": "^3.5.1",
+    "puppeteer": "^8.0.0",
     "twit": "^2.2.11",
     "ytdl-core": "^4.5.0",
     "ytsearcher": "^1.2.3"
