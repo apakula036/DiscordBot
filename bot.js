@@ -584,7 +584,7 @@ async function scrapeText(url, item, message){
     message.reply(rank + rank2);
     browser.close();
 }*/
-async function scrapeThirdAndFourth(url, message){
+async function scrapeThirdAndFourth(url, message){// can i condense this? need to learn more here 
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(url);
@@ -592,11 +592,15 @@ async function scrapeThirdAndFourth(url, message){
     const [el5] = await page.$x('/html/body/div/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[2]/td[2]/div[1]/text()');
     const txtFive = await el5.getProperty('textContent');
     const titleThree = await txtFive.jsonValue();
-    //2nd row title
+    //2nd row Rank
     const [el6] = await page.$x('//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[2]/td[2]/div[2]');
     const txtSix = await el6.getProperty('textContent');
     const rankThree = await txtSix.jsonValue();
-    //3rd row rank
+    //2nd row ELO 
+    const [el7] = await page.$x('//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[2]/td[3]/div/div[2]/div[1]/div');
+    const txtSeven = await el7.getProperty('textContent');
+    const ELOOne = await txtSeven.jsonValue();
+    //3rd row title
     const [el1] = await page.$x("/html/body/div/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[3]/td[2]/div[1]/text()");
     const txtOne = await el1.getProperty('textContent');
     const titleOne = await txtOne.jsonValue();
@@ -604,6 +608,10 @@ async function scrapeThirdAndFourth(url, message){
     const [el2] = await page.$x('//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[3]/td[2]/div[2]');
     const txtTwo = await el2.getProperty('textContent');
     const rankOne = await txtTwo.jsonValue();
+    //3rd row ELO 
+    const [el8] = await page.$x('//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[3]/td[3]/div/div[2]/div[1]/div');
+    const txtEight = await el8.getProperty('textContent');
+    const ELOTwo = await txtEight.jsonValue();
     //4th row title
     const [el3] = await page.$x('//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[4]/td[2]/div[1]/text()');
     const txtThree = await el3.getProperty('textContent');
@@ -612,10 +620,14 @@ async function scrapeThirdAndFourth(url, message){
     const [el4] = await page.$x('//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[4]/td[2]/div[2]');
     const txtFour = await el4.getProperty('textContent');
     const rankTwo = await txtFour.jsonValue();
+    //4th row ELO 
+    const [el9] = await page.$x('//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[4]/td[3]/div/div[2]/div[1]/div');
+    const txtNine = await el9.getProperty('textContent');
+    const ELOThree = await txtNine.jsonValue();
 
     console.log(titleThree + rankThree + titleOne + rankOne +  titleTwo + rankTwo)
     //console.log({rank} + {rank2}); //log to make sure it works 
-    message.reply(titleThree + rankThree + "\n" + titleOne + rankOne + "\n" + titleTwo + rankTwo);
+    message.reply(titleThree + rankThree + " ELO:"+ ELOOne + "\n" + titleOne + rankOne + " ELO:"+ ELOTwo + "\n" + titleTwo + rankTwo + " ELO:"+ ELOThree);
     browser.close();
 }
 client.login(process.env.BOT_TOKEN)
