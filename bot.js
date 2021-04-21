@@ -487,14 +487,12 @@ function saveToTextFile(theMessage){
         console.log('Saved!');
     })
 }
-function ballsCounter(message){
+function ballsCounter(message){//I fixed this and I dont know why it works 
     fs.readFile('ballsCounter.txt', function(err, data) {
-        console.log("this is a test to see what its at " + data)
-        //parseInt(data)
-        //console.log(data)
+        console.log("this is a test to see what its at " + data++)
+        console.log(data)
         newData = parseInt(data) 
-        //console.log(data)
-        fs.appendFile('ballsCounter.txt', newData, function (err) {
+        fs.writeFile('ballsCounter.txt', newData, function (err) {
             if (err) throw err;
             console.log('Saved!');
         })
