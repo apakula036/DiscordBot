@@ -558,7 +558,7 @@ function getReadyForTweet(message){
 function rlScrapeFunction(message){
     const id = message.content.slice().trim().split(/ +/g);
     console.log(id[1]);
-    message.reply("Working on it! Please wait a second, theres a bit going on behind the scenes because RL doesnt want to make this easy!");
+    message.reply("Working on it! Please wait a second, theres a bit going on behind the scenes because RL doesnt want to make this easy! If nothing pops up be sure to use !rocketLeagueTrackerHelp for moore information.");
     //scrapeText('https://rocketleague.tracker.network/rocket-league/profile/steam/' + id[1] + '/overview', '//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[4]/td[2]/div[2]', message)
     scrapeThirdAndFourth('https://rocketleague.tracker.network/rocket-league/profile/steam/' + id[1] + '/overview', message)
 }
