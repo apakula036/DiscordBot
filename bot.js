@@ -558,7 +558,7 @@ function getReadyForTweet(message){
 function rlScrapeFunction(message){
     const id = message.content.slice().trim().split(/ +/g);
     console.log(id[1]);
-    message.reply("Working on it! Please wait a second, theres a bit going on behind the scenes because RL doesnt want to make this easy! If nothing pops up be sure to use !rocketLeagueTrackerHelp for moore information.");
+    message.reply("Working on it! Please wait a second, theres a bit going on behind the scenes because RL doesnt want to make this easy! If nothing pops up be sure to use !rocketLeagueTrackerHelp for more information.");
     //scrapeText('https://rocketleague.tracker.network/rocket-league/profile/steam/' + id[1] + '/overview', '//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[4]/td[2]/div[2]', message)
     scrapeThirdAndFourth('https://rocketleague.tracker.network/rocket-league/profile/steam/' + id[1] + '/overview', message)
 }
@@ -587,7 +587,8 @@ async function scrapeThirdAndFourth(url, message){// can i condense this? need t
     const page = await browser.newPage();
     await page.goto(url);
     //2nd row title
-    const [el5] = await page.$x('/html/body/div/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[2]/td[2]/div[1]/text()');
+    const [el5] = await page.$x('/html/body/div/div[2]/div[2]/div/main/div[2]/div[1]/div[2]/div[2]/div[2]/span/span');
+    console.log(el5)
     const txtFive = await el5.getProperty('textContent');
     const titleThree = await txtFive.jsonValue();
     //2nd row Rank
@@ -627,6 +628,7 @@ async function scrapeThirdAndFourth(url, message){// can i condense this? need t
     //console.log({rank} + {rank2}); //log to make sure it works 
     message.reply(titleThree + rankThree + " ELO:"+ ELOOne + "\n" + titleOne + rankOne + " ELO:"+ ELOTwo + "\n" + titleTwo + rankTwo + " ELO:"+ ELOThree);
     browser.close();
+
 }
 client.login(process.env.BOT_TOKEN)
 //npm run devStart
