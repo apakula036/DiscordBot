@@ -217,6 +217,8 @@ client.on('message', message => {
     } else if (theCommand == "!rocketleaguetrackerhelp") {
         message.reply("Hello! To use the tracker you'll need to do a couple things first. Sign in with your steam account to link it to the tracker here: https://rocketleague.tracker.network/")
         message.reply("After you have connected your account, give it some games, time, and refresh a few times so that the data is correct and current. After that you should be good to go! Use the command !rl3s 'your steam ID here' to get your rank! Because RocketLeague wants to make it harder still, the tracker seems to flip flop the data so I have to grab your hoops rank as well, oh well lol! \nFor a bonus tip go to your Steam profile and change the URL to a custom one thats easier to remember rather than a bunch of numbers. Thank you Trevor!!")
+    } else if (theCommand == "!githubcontributions"){
+        scrapeGithub(message, 'https://github.com/apakula036') 
     }
     
 });
@@ -562,26 +564,17 @@ function rlScrapeFunction(message){
     //scrapeText('https://rocketleague.tracker.network/rocket-league/profile/steam/' + id[1] + '/overview', '//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[4]/td[2]/div[2]', message)
     scrapeThirdAndFourth('https://rocketleague.tracker.network/rocket-league/profile/steam/' + id[1] + '/overview', message)
 }
-/*
-async function scrapeText(url, item, message){
+
+async function scrapeGithub(message, url){
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(url);
-    //3rd row
-    const [el2] = await page.$x(item);
-    const txt = await el2.getProperty('textContent');
-    const rank = await txt.jsonValue();
-    //4th row 
-    const [el2] = await page.$x(item);
-    const txt = await el2.getProperty('textContent');
-    const rank = await txt.jsonValue();
-
-
-
-    console.log({rank} + {rank2}); //log to make sure it works 
-    message.reply(rank + rank2);
+    const [el11] = await page.$x('/html/body/div[4]/main/div[2]/div/div[2]/div[2]/div/div[2]/div[1]/div/h2');
+    const contra = await el11.getProperty('textContent');
+    const contributions = await contra.jsonValue();
+    message.reply(contributions);
     browser.close();
-}*/
+}
 async function scrapeThirdAndFourth(url, message){// can i condense this? need to learn more here 
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
