@@ -456,7 +456,6 @@ function randomNote(){
             fs.read(fd, buffer, 0, buffer.length, 
                 null, function (error, bytesRead, buffer) { 
                     var data = buffer.toString("utf8"); 
-                    //console.log(data); 
                     let arrayOfIds = [];
                     arrayOfIds.push(data);
                     const randomNumber = Math.floor(Math.random() * arrayOfIds.length);
@@ -556,7 +555,6 @@ function getReadyForTweet(message){
     makeTweets(stringer); 
     message.reply('You tweeted: '+ stringer);
 }
-
 function rlScrapeFunction(message){
     const id = message.content.slice().trim().split(/ +/g);
     console.log(id[1]);
@@ -564,7 +562,6 @@ function rlScrapeFunction(message){
     //scrapeText('https://rocketleague.tracker.network/rocket-league/profile/steam/' + id[1] + '/overview', '//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[4]/td[2]/div[2]', message)
     scrapeThirdAndFourth('https://rocketleague.tracker.network/rocket-league/profile/steam/' + id[1] + '/overview', message)
 }
-
 async function scrapeGithub(message, url){
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
@@ -616,12 +613,10 @@ async function scrapeThirdAndFourth(url, message){// can i condense this? need t
     const [el9] = await page.$x('//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[4]/td[3]/div/div[2]/div[1]/div');
     const txtNine = await el9.getProperty('textContent');
     const ELOThree = await txtNine.jsonValue();
-
     console.log(titleThree + rankThree + titleOne + rankOne +  titleTwo + rankTwo)
     //console.log({rank} + {rank2}); //log to make sure it works 
     message.reply(titleThree + rankThree + " ELO:"+ ELOOne + "\n" + titleOne + rankOne + " ELO:"+ ELOTwo + "\n" + titleTwo + rankTwo + " ELO:"+ ELOThree);
     browser.close();
-
 }
 client.login(process.env.BOT_TOKEN)
 //npm run devStart
