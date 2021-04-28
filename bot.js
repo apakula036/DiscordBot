@@ -118,7 +118,7 @@ client.on('message', message => {
         message.react("❤️")
     } else if (message.content === "!help") {
         message.reply('I can do a bunch of things including play sounds! Here is a list of what I can do, some of these are sounds and some are not!')
-        message.reply('!playRandomSound or !prs, !playShortSound or !prss !noteThis "your note here", !milk, !taco, !mmm, !sure, !rlranks "your steam ID here", !rocketLeagueTrackerHelp, !advice, !stamos, !xgames, !wavefinger, !guitar, !tweet "Your tweet here", !BFGDivision, !paulGilb, !C418WetHands, !C418DryHands, !grimreaper, !rain, !ironManGuitarOnly, !senddog, !wedidit, !saveThatShit, !chunky, !eightball, !temperatureSports, !wockyBass, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !wocky, !sports, !balls, and !ping')
+        message.reply('!playRandomSound or !prs, !playShortSound or !prss, !giveFiles, !gitHubContributions, !noteThis "your note here", !milk, !taco, !mmm, !sure, !rlranks "your steam ID here", !rocketLeagueTrackerHelp, !advice, !stamos, !xgames, !wavefinger, !guitar, !tweet "Your tweet here", !BFGDivision, !paulGilb, !C418WetHands, !C418DryHands, !grimreaper, !rain, !ironManGuitarOnly, !senddog, !wedidit, !saveThatShit, !chunky, !eightball, !temperatureSports, !wockyBass, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !wocky, !sports, !balls, and !ping')
         message.react("👍")
     } else if (theCommand === "!advice") {
         giveAdvice(message)//test this 
@@ -219,6 +219,8 @@ client.on('message', message => {
         message.reply("After you have connected your account, give it some games, time, and refresh a few times so that the data is correct and current. After that you should be good to go! Use the command !rl3s 'your steam ID here' to get your rank! Because RocketLeague wants to make it harder still, the tracker seems to flip flop the data so I have to grab your hoops rank as well, oh well lol! \nFor a bonus tip go to your Steam profile and change the URL to a custom one thats easier to remember rather than a bunch of numbers. Thank you Trevor!!")
     } else if (theCommand == "!githubcontributions"){
         scrapeGithub(message, 'https://github.com/apakula036') 
+    } else if (theCommand == "!givefiles"){
+        giveTextFile(message);
     }
     
 });
@@ -297,10 +299,10 @@ function flipACoin(message){
     if(randomNumber == 1){
         message.reply("Heads!" , {
         files: [
-            "https://faculty.math.illinois.edu/~hildebr/fakerandomness/resources/heads.png"
+            "https://i.ebayimg.com/images/g/xtcAAOSwLwBaZigS/s-l500.jpg"
         ]
     })
-    } else{
+    } else {
         message.reply("Tails!", {
             files: [
                 "https://random-ize.com/coin-flip/us-quarter/us-quarter-back.jpg"
@@ -308,6 +310,13 @@ function flipACoin(message){
         });
     }
 }
+function giveTextFile(message){
+        message.reply("Attempt #1!" , {
+        files: [
+            "testfile.txt"
+        ]
+    })
+};
 function weatherSports(message){
     axios.get("http://api.openweathermap.org/data/2.5/weather?q=lockport,us&units=imperial&APPID=" + process.env.API_TOKEN_KEY)
     .then((res) => {  
