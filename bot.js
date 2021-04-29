@@ -118,7 +118,7 @@ client.on('message', message => {
         message.react("❤️")
     } else if (message.content === "!help") {
         message.reply('I can do a bunch of things including play sounds! Here is a list of what I can do, some of these are sounds and some are not!')
-        message.reply('!playRandomSound or !prs, !playShortSound or !prss, !giveFiles, !gitHubContributions, !noteThis "your note here", !milk, !taco, !mmm, !sure, !rlranks "your steam ID here", !rocketLeagueTrackerHelp, !advice, !stamos, !xgames, !wavefinger, !guitar, !tweet "Your tweet here", !BFGDivision, !paulGilb, !C418WetHands, !C418DryHands, !grimreaper, !rain, !ironManGuitarOnly, !senddog, !wedidit, !saveThatShit, !chunky, !eightball, !temperatureSports, !wockyBass, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !wocky, !sports, !balls, and !ping')
+        message.reply('!playRandomSound or !prs, !islive "streamer name here", !playShortSound or !prss, !giveFiles, !gitHubContributions, !noteThis "your note here", !milk, !taco, !mmm, !sure, !rlranks "your steam ID here", !rocketLeagueTrackerHelp, !advice, !stamos, !xgames, !wavefinger, !guitar, !tweet "Your tweet here", !BFGDivision, !paulGilb, !C418WetHands, !C418DryHands, !grimreaper, !rain, !ironManGuitarOnly, !senddog, !wedidit, !saveThatShit, !chunky, !eightball, !temperatureSports, !wockyBass, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !wocky, !sports, !balls, and !ping')
         message.react("👍")
     } else if (theCommand === "!advice") {
         giveAdvice(message)//test this 
@@ -221,6 +221,8 @@ client.on('message', message => {
         scrapeGithub(message, 'https://github.com/apakula036') 
     } else if (theCommand == "!givefiles"){
         giveTextFile(message);
+    } else if (message.content.startsWith("!islive")){
+        scrapeTwitch(message)
     }
     
 });
@@ -626,6 +628,18 @@ async function scrapeThirdAndFourth(url, message){// can i condense this? need t
     //console.log({rank} + {rank2}); //log to make sure it works 
     message.reply(titleThree + rankThree + " ELO:"+ ELOOne + "\n" + titleOne + rankOne + " ELO:"+ ELOTwo + "\n" + titleTwo + rankTwo + " ELO:"+ ELOThree);
     browser.close();
+}
+async function scrapeTwitch(message) { 
+    const id = message.content.slice().trim().split(/ +/g);
+    const browser = await puppeteer.launch( {headless: false});
+    const page = await browser.newPage();
+    await page.goto( "https://www.twitch.tv/" + id[1]);
+    const [el] = await page.$x('/html/body/div[1]/div/div[2]/div/main/div[2]/div[3]/div/div/div[1]/div[1]/div[2]/div/div[1]/div/div/div/div[1]/div/div/a/div[2]/div/div/div/div/p');
+    const live = await el.getProperty('textContent');
+    const isLive = await live.jsonValue();
+    console.log(isLive); //log to see if it worked 
+    browser.close();
+    message.reply(isLive);
 }
 client.login(process.env.BOT_TOKEN)
 //npm run devStart
