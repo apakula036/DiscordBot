@@ -223,6 +223,8 @@ client.on('message', message => {
         giveTextFile(message);
     } else if (message.content.startsWith("!islive")){
         scrapeTwitch(message)
+    } else if (theCommand == "!affirm"){
+        affirmationAPICall(message);
     }
     
 });
@@ -641,5 +643,18 @@ async function scrapeTwitch(message) {
     browser.close();
     message.reply(isLive);
 }
+function affirmationAPICall(message){
+    axios.get("https://www.affirmations.dev/")
+    .then((res) => {
+        console.log('RES:', res)
+        //client.channels.cache.get(channelTwoID).send(res)
+        message.reply(res);
+    })
+    .catch((err) => {
+        console.error('ERR:', err)
+    })
+    return " ";
+}
+// this is a note for later https://api.nasa.gov/
 client.login(process.env.BOT_TOKEN)
 //npm run devStart
