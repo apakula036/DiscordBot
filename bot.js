@@ -22,7 +22,7 @@ var T = new Twit({
   access_token:         process.env.ACCESS_TOKENAPI,
   access_token_secret:  process.env.ACCESS_TOKENAPI_SECRET,
 })
-//Variable declarations 
+//Arrays 
 const eightBallArray = [
     "As I see it, yes.",
     "Ask again later.",
@@ -99,29 +99,28 @@ const shortSoundArray = [
     "sounds/milk.mp3",
 ];
 var i;
+//Start bot and run these functions
 client.on('ready', () => {
-    client.channels.cache.get(channelTwoID).send('Im Ready!');
+    client.channels.cache.get(channelTwoID).send('Im Ready!');//logging on discord its working
     checkTimeFunc();
     greetings();
     readTweets();
     readNotes();
     testReadFileArray();
 })
+//Giant if else statement taking message from user and breaking it down to do the correct function also tests if the sender is a bot, if so, do nothing.
 client.on('message', message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
     const args = message.content.slice().trim().split(/ +/g);
     const theCommand = args.shift().toLowerCase();
-    console.log(theCommand)
+    console.log(theCommand)//log what command they entered
     if (theCommand === "!ping") {
-        console.log(theCommand)
-        message.reply("Pong!")
-        message.react("❤️")
+        message.reply("Pong!"); message.react("❤️");
     } else if (message.content === "!help") {
         message.reply('I can do a bunch of things including play sounds! Here is a list of what I can do, some of these are sounds and some are not!')
-        message.reply('!playRandomSound or !prs, !islive "streamer name here", !playShortSound or !prss, !giveFiles, !gitHubContributions, !noteThis "your note here", !milk, !taco, !mmm, !sure, !rlranks "your steam ID here", !rocketLeagueTrackerHelp, !advice, !stamos, !xgames, !wavefinger, !guitar, !tweet "Your tweet here", !BFGDivision, !paulGilb, !C418WetHands, !C418DryHands, !grimreaper, !rain, !ironManGuitarOnly, !senddog, !wedidit, !saveThatShit, !chunky, !eightball, !temperatureSports, !wockyBass, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !wocky, !sports, !balls, and !ping')
-        message.react("👍")
+        message.reply('!playRandomSound or !prs, !islive "streamer name here", !playShortSound or !prss, !giveFiles, !gitHubContributions, !noteThis "your note here", !milk, !taco, !mmm, !sure, !rlranks "your steam ID here", !rocketLeagueTrackerHelp, !advice, !stamos, !xgames, !wavefinger, !guitar, !tweet "Your tweet here", !BFGDivision, !paulGilb, !C418WetHands, !C418DryHands, !grimreaper, !rain, !ironManGuitarOnly, !senddog, !wedidit, !saveThatShit, !chunky, !eightball, !temperatureSports, !wockyBass, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !wocky, !sports, !balls, and !ping'); message.react("👍");
     } else if (theCommand === "!advice") {
-        giveAdvice(message)//test this 
+        giveAdvice(message); 
     } else if (message.content.startsWith("!notethis")){
         getReadyToSaveToTextFile(message);
     } else if (theCommand == "!paulgilb") {
@@ -155,9 +154,7 @@ client.on('message', message => {
         ballsCounter(message)
     } else if (theCommand == "!ballcounter"){
         ballChecker(message)
-    } /*else if (message.contains("bro")){
-        broBot(message)
-    }*/ else if (theCommand == "!chunky") {
+    } else if (theCommand == "!chunky") {
         playSong("sounds/chunky.mp3", message)
     } else if (theCommand == "!grimreaper") {
         playSong("sounds/grimreaper.mp3", message)
@@ -225,15 +222,17 @@ client.on('message', message => {
         scrapeTwitch(message)
     } else if (theCommand == "!affirm"){
         affirmationAPICall(message);
+    } else if ((message.content.startsWith("I'm")) || (message.content.startsWith("Im")) || (message.content.startsWith("I’m")) || (message.content.startsWith("im")) || (message.content.startsWith("i'm"))){
+        dadBot(message)
     }
-    
 });
-
+/*
+//Dad bot functionality here seperate can probably get rid of these needs test 
 client.on('message', message => {
     if ((message.content.startsWith("I'm")) || (message.content.startsWith("Im")) || (message.content.startsWith("I’m")) || (message.content.startsWith("im")) || (message.content.startsWith("i'm"))){
         dadBot(message)
     }
-});
+});*/
 //---------------------Functionsssssssssssssssssssssssssss-------------------------
 function playRandom(message){
     const randomNumber = Math.floor(Math.random()* soundArray.length);
@@ -270,7 +269,7 @@ function dadBot(message){
         message.channel.send("Hi" + stringer + ", im HelpfulBot")
         return;
 }
-function broBot(message){
+function broBot(message){ //currently not being used 
     const randomNumber = Math.floor(Math.random()* broArray.length);
     message.channel.send("Wassup my fellow " + broArray[randomNumber] + ", im BROBOT")
     message.react("😎")
@@ -512,13 +511,6 @@ function ballsCounter(message){//I fixed this and I dont know why it works
         })
     });
 }
-function counter(){
-    fetch("ballsCounter.txt")
-    .then(function(response) { return response.text; })
-    .then(function(text) {
-      var num = parseInt(text);
-    });
-}
 function ballChecker(message){
     fs.readFile('ballsCounter.txt', function(err, data) {
         console.log(data);
@@ -529,7 +521,6 @@ function ballChecker(message){
 function giveAdvice(message){
     axios.get("https://api.adviceslip.com/advice")
     .then((res) => {
-        //console.log('RES:', res.data.slip.advice)
         message.reply(res.data.slip.advice)
     })
     .catch((err) => {
@@ -585,7 +576,7 @@ async function scrapeGithub(message, url){
     message.reply(contributions);
     browser.close();
 }
-async function scrapeThirdAndFourth(url, message){// can i condense this? need to learn more here 
+async function scrapeThirdAndFourth(url, message){// can i condense this? need to learn more here also i think i got myself blocked :) 
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(url);
@@ -643,7 +634,7 @@ async function scrapeTwitch(message) {
     browser.close();
     message.reply(isLive);
 }
-function affirmationAPICall(message){
+function affirmationAPICall(message){//Needs test 
     axios.get("https://www.affirmations.dev/")
     .then((res) => {
         console.log('RES:', res)
