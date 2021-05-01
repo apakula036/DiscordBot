@@ -468,19 +468,11 @@ function randomNote(){
             fs.read(fd, buffer, 0, buffer.length, 
                 null, function (error, bytesRead, buffer) { 
                     var data = buffer.toString("utf8"); 
-                    let arrayOfIds = [];
-                    arrayOfIds.push(data);
-                    const randomNumber = Math.floor(Math.random() * arrayOfIds.length);
-                    for (i = 0; i < arrayOfIds.length; i++) {
-                        console.log(arrayOfIds[i].slice())
-                        var testVar = arrayOfIds[i].slice()
-                        console.log("test under")
-                        console.log(testVar[1])
-                    }
+                    var newArray = data.split(",");
+                    console.log(newArray);//test array make sure it works
+                    const randomNumber = Math.floor(Math.random() * newArray.length);//get a random number based on the length of the array 
+                    console.log(newArray[randomNumber])//send to channel :sunglasses: 
                     //client.channels.cache.get(channelTwoID).send(arrayOfIds[randomNumber])
-                    //console.log("test under")
-                    //console.log(arrayOfIds[randomNumber])
-                    //console.log(arrayOfIds.length);//needs fix, seperate on _s each to get each item then make the array
             }); 
         });
     });
