@@ -105,7 +105,6 @@ client.on('ready', () => {
     checkTimeFunc();
     greetings();
     readTweets();
-    readNotes();
     testReadFileArray();
 })
 //Giant if else statement taking message from user and breaking it down to do the correct function also tests if the sender is a bot, if so, do nothing.
@@ -181,11 +180,13 @@ client.on('message', message => {
     } else if (theCommand == "!rick"){
         playSong("sounds/rick.mp3", message)
     } else if (theCommand == "!stop"){
-        discBot(message)
+        disconnectBot(message)
     } else if (message.content.startsWith("!weather")){
         giveWeather(message)
     } else if (theCommand === "!randomnote"){
-        randomNote()
+        randomNote(message);
+    } else if (theCommand == "!readallnotes"){
+        readAllNotes(message);
     } else if(theCommand === "!sports"){
         weatherSports(message)
     } else if(theCommand === "!temperaturesports"){
@@ -360,7 +361,7 @@ function giveWeather(message){
         console.error('ERR:', err)
     })
 }
-function discBot(message){
+function disconnectBot(message){
     const empty = "";
     message.member.voice.channel.join().then(VoiceConnection => {
         // Playing the music, and, on finish, disconnecting the bot.
@@ -439,14 +440,21 @@ function readTweets(){
                 null, function (error, bytesRead, buffer) { 
                     var data = buffer.toString("utf8"); 
                     console.log(data); 
-                    let arrayOfIds = [];
-                    arrayOfIds.push(data);
-                    console.log(arrayOfIds.length);//needs fix, seperate on _s each to get each item then make the array
+                    var newArray = data.split(",");
+                    console.log(newArray);//test array make sure it works
+                    const randomNumber = Math.floor(Math.random() * newArray.length);//get a random number based on the length of the array 
+                    console.log(newArray[randomNumber])//send to channel :sunglasses: 
+                    if(newArray[randomNumber] == ""){
+                        console.log(newArray[randomNumber - 1])
+                        message.reply(newArray[randomNumber - 1])
+                    } else {
+                        message.reply(newArray[randomNumber])
+                    }
             }); 
         });
     });
 }
-function readNotes(){
+function readAllNotes(message){
     fs.stat('newFile2.txt', function (error, stats) { 
         fs.open('newFile2.txt', "r", function (error, fd) { 
             var buffer = new Buffer.alloc(stats.size); 
@@ -454,14 +462,18 @@ function readNotes(){
                 null, function (error, bytesRead, buffer) { 
                     var data = buffer.toString("utf8"); 
                     console.log(data); 
-                    let arrayOfIds = [];
-                    arrayOfIds.push(data);
-                    console.log(arrayOfIds.length);//needs fix, seperate on _s each to get each item then make the array
+                    var newArray = data.split(",");
+                    console.log(newArray);//test array make sure it works
+                    //const randomNumber = Math.floor(Math.random() * newArray.length);//get a random number based on the length of the array 
+                    for(i=0;i = newArray.length; i++){
+                        console.log(newArray[i]);
+                        messsage.reply(newArray[i]);
+                    }
             }); 
         });
     });
 }
-function randomNote(){
+function randomNote(message){
     fs.stat('testfile.txt', function (error, stats) { 
         fs.open('testfile.txt', "r", function (error, fd) { 
             var buffer = new Buffer.alloc(stats.size); 
@@ -472,6 +484,12 @@ function randomNote(){
                     console.log(newArray);//test array make sure it works
                     const randomNumber = Math.floor(Math.random() * newArray.length);//get a random number based on the length of the array 
                     console.log(newArray[randomNumber])//send to channel :sunglasses: 
+                    if(newArray[randomNumber] == ""){
+                        console.log(newArray[randomNumber - 1])
+                        message.reply(newArray[randomNumber - 1])
+                    } else {
+                        message.reply(newArray[randomNumber])
+                    }
                     //client.channels.cache.get(channelTwoID).send(arrayOfIds[randomNumber])
             }); 
         });
