@@ -206,7 +206,7 @@ client.on('message', message => {
     } else if(message.content.startsWith("!tweet")){
         getReadyForTweet(message)
     } else if((theCommand == "!playshortsound") || (theCommand == "!prss")){
-        getReadyForTweet(message)
+        playRandomShort(message)
     } else if(theCommand === "!rlbeef3s"){
         message.reply("Working on it! Please wait a second, theres a bit going on behind the scenes because RL doesnt want to make this easy!")
         scrapeText('https://rocketleague.tracker.network/rocket-league/profile/steam/76561198010412811/overview', '//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[4]/td[2]/div[2]', message)
@@ -238,6 +238,10 @@ client.on('message', message => {
 function playRandom(message){
     const randomNumber = Math.floor(Math.random()* soundArray.length);
     playSong(soundArray[randomNumber], message)
+}
+function playRandomShort(message){
+    const randomNumber = Math.floor(Math.random()* soundArray.length);
+    playSong(shortSoundArray[randomNumber], message)
 }
 function eightBall(message){
     const randomNumber = Math.floor(Math.random()* eightBallArray.length);
