@@ -150,7 +150,7 @@ client.on('message', message => {
         playSong("sounds/stamos.mp3", message)
     } else if (theCommand == "!balls") {
         playSong("sounds/balls.mp3", message)
-        ballsCounter(message)
+        ballsCounter()
     } else if (theCommand == "!ballcounter"){
         ballChecker(message)
     } else if (theCommand == "!chunky") {
@@ -274,13 +274,6 @@ function dadBot(message){
         message.channel.send("Hi" + stringer + ", im HelpfulBot")
         return;
 }
-function broBot(message){ //currently not being used 
-    const randomNumber = Math.floor(Math.random()* broArray.length);
-    message.channel.send("Wassup my fellow " + broArray[randomNumber] + ", im BROBOT")
-    message.react("😎")
-    message.react("💪")
-    return;
-}
 function temperatureSports(message){
     axios.get("http://api.openweathermap.org/data/2.5/weather?q=lockport,us&units=imperial&APPID=" + process.env.API_TOKEN_KEY)
         .then((res) => {  
@@ -302,7 +295,6 @@ function temperatureSports(message){
         })
 }
 function flipACoin(message){
-    const coin = 2;
     const randomNumber = Math.floor(Math.random() * 2);
     if(randomNumber == 1){
         message.reply("Heads!" , {
@@ -319,7 +311,7 @@ function flipACoin(message){
     }
 }
 function giveTextFile(message){
-        message.reply("Attempt #1!" , {
+        message.reply("Here ya go!" , {
         files: [
             "testfile.txt"
         ]
@@ -471,7 +463,7 @@ function readAllNotes(message){
                     //const randomNumber = Math.floor(Math.random() * newArray.length);//get a random number based on the length of the array 
                     for(i=0;i = newArray.length; i++){
                         console.log(newArray[i]);
-                        messsage.reply(newArray[i]);
+                        message.reply(newArray[i]);
                     }
             }); 
         });
@@ -514,7 +506,7 @@ function saveToTextFile(theMessage){
         console.log('Saved!');
     })
 }
-function ballsCounter(message){//I fixed this and I dont know why it works 
+function ballsCounter(){//I fixed this and I dont know why it works 
     fs.readFile('ballsCounter.txt', function(err, data) {
         console.log("this is a test to see what its at " + data++)
         console.log(data)
