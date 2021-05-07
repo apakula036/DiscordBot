@@ -104,8 +104,7 @@ client.on('ready', () => {
     client.channels.cache.get(channelTwoID).send('Im Ready!');//logging on discord its working
     checkTimeFunc();
     greetings();
-    readTweets();
-    testReadFileArray();
+    //nasaDailyPhoto();
 })
 //Giant if else statement taking message from user and breaking it down to do the correct function also tests if the sender is a bot, if so, do nothing.
 client.on('message', message => {
@@ -225,6 +224,8 @@ client.on('message', message => {
         affirmationAPICall(message);
     } else if ((message.content.startsWith("I'm")) || (message.content.startsWith("Im")) || (message.content.startsWith("I’m")) || (message.content.startsWith("im")) || (message.content.startsWith("i'm"))){
         dadBot(message)
+    } else if (theCommand == "!nasaphoto"){
+        nasaPhoto(message);
     }
 });
 /*
@@ -442,9 +443,9 @@ function readTweets(){
                     console.log(newArray[randomNumber])//send to channel :sunglasses: 
                     if(newArray[randomNumber] == ""){
                         console.log(newArray[randomNumber - 1])
-                        message.reply(newArray[randomNumber - 1])
+                        client.channels.cache.get(channelTwoID).send(newArray[randomNumber - 1])
                     } else {
-                        message.reply(newArray[randomNumber])
+                        client.channels.cache.get(channelTwoID).send(newArray[randomNumber])
                     }
             }); 
         });
@@ -652,6 +653,18 @@ function affirmationAPICall(message){//Needs test
     })
     return " ";
 }
+function nasaPhoto(message){
+    axios.get("https://api.nasa.gov/planetary/apod?api_key=" + process.env.NASA_APIKEY )
+    .then((res) => {
+        console.log('RES:', res.data.url)
+        message.reply(res.data.title + "\n" + res.data.url + "\n" + res.data.explanation);
+    })
+    .catch((err) => {
+        console.error('ERR:', err)
+    })
+    return " ";
+}
+
 // this is a note for later https://api.nasa.gov/
 client.login(process.env.BOT_TOKEN)
 //npm run devStart
