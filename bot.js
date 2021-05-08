@@ -664,7 +664,5 @@ function nasaPhoto(message){
     })
     return " ";
 }
-
-// this is a note for later https://api.nasa.gov/
 client.login(process.env.BOT_TOKEN)
 //npm run devStart
