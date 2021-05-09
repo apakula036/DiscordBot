@@ -101,10 +101,9 @@ const shortSoundArray = [
 var i;
 //Start bot and run these functions
 client.on('ready', () => {
-    client.channels.cache.get(channelTwoID).send('Im Ready!');//logging on discord its working
-    checkTimeFunc();
-    greetings();
-    //nasaDailyPhoto();
+    client.channels.cache.get(channelTwoID).send('Im Ready!');
+    //checkTimeFunc();
+    //greetings();
 })
 //Giant if else statement taking message from user and breaking it down to do the correct function also tests if the sender is a bot, if so, do nothing.
 client.on('message', message => {
@@ -222,19 +221,17 @@ client.on('message', message => {
         scrapeTwitch(message)
     } else if (theCommand == "!affirm"){
         affirmationAPICall(message);
-    } else if ((message.content.startsWith("I'm")) || (message.content.startsWith("Im")) || (message.content.startsWith("I’m")) || (message.content.startsWith("im")) || (message.content.startsWith("i'm"))){
-        dadBot(message)
     } else if (theCommand == "!nasaphoto"){
         nasaPhoto(message);
     }
 });
-/*
+
 //Dad bot functionality here seperate can probably get rid of these needs test 
 client.on('message', message => {
     if ((message.content.startsWith("I'm")) || (message.content.startsWith("Im")) || (message.content.startsWith("I’m")) || (message.content.startsWith("im")) || (message.content.startsWith("i'm"))){
         dadBot(message)
     }
-});*/
+});
 //---------------------Functionsssssssssssssssssssssssssss-------------------------
 function playRandom(message){
     const randomNumber = Math.floor(Math.random()* soundArray.length);
