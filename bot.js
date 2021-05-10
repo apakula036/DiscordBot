@@ -115,7 +115,7 @@ client.on('message', message => {
         message.reply("Pong!"); message.react("❤️");
     } else if (message.content === "!help") {
         message.reply('I can do a bunch of things including play sounds! Here is a list of what I can do, some of these are sounds and some are not!')
-        message.reply('!playRandomSound or !prs, !islive "streamer name here", !playShortSound or !prss, !giveFiles, !gitHubContributions, !noteThis "your note here", !milk, !taco, !mmm, !sure, !rlranks "your steam ID here", !rocketLeagueTrackerHelp, !advice, !stamos, !xgames, !wavefinger, !guitar, !tweet "Your tweet here", !BFGDivision, !paulGilb, !C418WetHands, !C418DryHands, !grimreaper, !rain, !ironManGuitarOnly, !senddog, !wedidit, !saveThatShit, !chunky, !eightball, !temperatureSports, !wockyBass, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !wocky, !sports, !balls, and !ping'); message.react("👍");
+        message.reply('!playRandomSound or !prs, !islive "streamer ID here", !playShortSound or !prss, !giveFiles, !gitHubContributions, !noteThis "your note here", !milk, !taco, !mmm, !sure, !rlranks "your steam ID here", !rocketLeagueTrackerHelp, !advice, !stamos, !xgames, !wavefinger, !guitar, !tweet "Your tweet here", !readAllTweets,!randomTweet !BFGDivision, !paulGilb, !C418WetHands, !C418DryHands, !grimreaper, !rain, !ironManGuitarOnly, !senddog, !wedidit, !saveThatShit, !chunky, !eightball, !temperatureSports, !wockyBass, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !wocky, !sports, !balls, !affirm, and !ping'); message.react("👍");
     } else if (theCommand === "!advice") {
         giveAdvice(message); 
     } else if (message.content.startsWith("!notethis")){
@@ -203,7 +203,11 @@ client.on('message', message => {
         randomBetween(message)
     } else if(message.content.startsWith("!tweet")){
         getReadyForTweet(message)
-    } else if((theCommand == "!playshortsound") || (theCommand == "!prss")){
+    } else if (theCommand == "!readalltweets"){
+        readAllTweets();
+    } else if (theCommand == "!randomtweet"){
+        readRandomTweet();
+    }else if((theCommand == "!playshortsound") || (theCommand == "!prss")){
         playRandomShort(message)
     } else if(theCommand === "!rlbeef3s"){
         message.reply("Working on it! Please wait a second, theres a bit going on behind the scenes because RL doesnt want to make this easy!")
@@ -214,6 +218,7 @@ client.on('message', message => {
         message.reply("Hello! To use the tracker you'll need to do a couple things first. Sign in with your steam account to link it to the tracker here: https://rocketleague.tracker.network/")
         message.reply("After you have connected your account, give it some games, time, and refresh a few times so that the data is correct and current. After that you should be good to go! Use the command !rl3s 'your steam ID here' to get your rank! Because RocketLeague wants to make it harder still, the tracker seems to flip flop the data so I have to grab your hoops rank as well, oh well lol! \nFor a bonus tip go to your Steam profile and change the URL to a custom one thats easier to remember rather than a bunch of numbers. Thank you Trevor!!")
     } else if (theCommand == "!githubcontributions"){
+        message.reply("Working on it!")
         scrapeGithub(message, 'https://github.com/apakula036') 
     } else if (theCommand == "!givefiles"){
         giveTextFile(message);
@@ -343,7 +348,7 @@ function weatherSports(message){
             "mph. The sky is " + res.data.weather[0].main.toLowerCase()+". Dont do it.")}
     })
 }
-function giveWeather(message){
+function giveWeather(message){//add the error log 
     const args = message.content.slice().trim().split(/ +/g);
     const theCommand = args.shift().toLowerCase();
     const city = args[0];
@@ -353,6 +358,7 @@ function giveWeather(message){
     })
     .catch((err) => {
         console.error('ERR:', err)
+        message.reply("Uh oh! Error! Please make sure that the location is typed in correctly!");
     })
 }
 function disconnectBot(message){
@@ -412,6 +418,7 @@ function makeTweets(theTweet){
     //EDIT: it almost got banned again seperate reason though 
     T.post('statuses/update', { status: theTweet }, function(err, data, response) {
         saveTweetID(data.id_str, theTweet);
+        saveTweetNoID(theTweet);
         data = " ";
         theTweet = " ";
     })
@@ -423,18 +430,27 @@ function saveTweetID(tweetID, theTweet){
       });
     fs.appendFile('mynewfile1.txt', tweetID +"_"+ theTweet, function (err) {
         if (err) throw err;
+        console.log('Saved ' + theTweet);
+      });
+}function saveTweetNoID(theTweet){
+    fs.appendFile('tweetsnoids.txt', "\r\n", function (err) {
+        if (err) throw err;
         console.log('Saved!');
       });
+    fs.appendFile('tweetsnoids.txt', theTweet + "_" , function (err) {
+        if (err) throw err;
+        console.log('Saved ' + theTweet + " to file tweetsNoIDs.txt");
+      });
 }
-function readTweets(){
-    fs.stat('mynewfile1.txt', function (error, stats) { 
-        fs.open('mynewfile1.txt', "r", function (error, fd) { 
+function readRandomTweet(){
+    fs.stat('tweetsnoids.txt', function (error, stats) { 
+        fs.open('tweetsnoids.txt', "r", function (error, fd) { 
             var buffer = new Buffer.alloc(stats.size); 
             fs.read(fd, buffer, 0, buffer.length, 
                 null, function (error, bytesRead, buffer) { 
                     var data = buffer.toString("utf8"); 
                     console.log(data); 
-                    var newArray = data.split(",");
+                    var newArray = data.split("_");
                     console.log(newArray);//test array make sure it works
                     const randomNumber = Math.floor(Math.random() * newArray.length);//get a random number based on the length of the array 
                     console.log(newArray[randomNumber])//send to channel :sunglasses: 
@@ -444,6 +460,21 @@ function readTweets(){
                     } else {
                         client.channels.cache.get(channelTwoID).send(newArray[randomNumber])
                     }
+            }); 
+        });
+    });
+}
+function readAllTweets(){//could error out after a lot of tweets, be weary itll need to be fixed maybe at some point 
+    fs.stat('tweetsnoids.txt', function (error, stats) { 
+        fs.open('tweetsnoids.txt', "r", function (error, fd) { 
+            var buffer = new Buffer.alloc(stats.size); 
+            fs.read(fd, buffer, 0, buffer.length, 
+                null, function (error, bytesRead, buffer) { 
+                    var data = buffer.toString("utf8"); 
+                    console.log(data); 
+                    var newArray = data.split("_");
+                    console.log(newArray);
+                    client.channels.cache.get(channelTwoID).send(newArray);
             }); 
         });
     });
@@ -638,12 +669,10 @@ async function scrapeTwitch(message) {
     browser.close();
     message.reply(isLive);
 }
-function affirmationAPICall(message){//Needs test 
+function affirmationAPICall(message){
     axios.get("https://www.affirmations.dev/")
     .then((res) => {
-        console.log('RES:', res)
-        //client.channels.cache.get(channelTwoID).send(res)
-        message.reply(res);
+        message.reply(res.data.affirmation);
     })
     .catch((err) => {
         console.error('ERR:', err)
