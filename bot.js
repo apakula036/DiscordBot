@@ -449,13 +449,9 @@ function readRandomTweet(){
             fs.read(fd, buffer, 0, buffer.length, 
                 null, function (error, bytesRead, buffer) { 
                     var data = buffer.toString("utf8"); 
-                    console.log(data); 
                     var newArray = data.split("_");
-                    console.log(newArray);//test array make sure it works
-                    const randomNumber = Math.floor(Math.random() * newArray.length);//get a random number based on the length of the array 
-                    console.log(newArray[randomNumber])//send to channel :sunglasses: 
+                    const randomNumber = Math.floor(Math.random() * newArray.length);//get a random number based on the length of the array  
                     if(newArray[randomNumber] == ""){
-                        console.log(newArray[randomNumber - 1])
                         client.channels.cache.get(channelTwoID).send(newArray[randomNumber - 1])
                     } else {
                         client.channels.cache.get(channelTwoID).send(newArray[randomNumber])
@@ -471,9 +467,7 @@ function readAllTweets(){//could error out after a lot of tweets, be weary itll 
             fs.read(fd, buffer, 0, buffer.length, 
                 null, function (error, bytesRead, buffer) { 
                     var data = buffer.toString("utf8"); 
-                    console.log(data); 
                     var newArray = data.split("_");
-                    console.log(newArray);
                     client.channels.cache.get(channelTwoID).send(newArray);
             }); 
         });
@@ -485,16 +479,13 @@ function readAllNotes(message){
             var buffer = new Buffer.alloc(stats.size); 
             fs.read(fd, buffer, 0, buffer.length, 
                 null, function (error, bytesRead, buffer) { 
-                    var data = buffer.toString("utf8"); 
-                    console.log(data); 
+                    var data = buffer.toString("utf8");  
                     var newArray = data.split(",");
-                    console.log(newArray);//test array make sure it works
-                    //const randomNumber = Math.floor(Math.random() * newArray.length);//get a random number based on the length of the array 
                     for(i=0;i = newArray.length; i++){
                         console.log(newArray[i]);
                         message.reply(newArray[i]);
                     }
-            }); 
+                }); 
         });
     });
 }
@@ -506,16 +497,13 @@ function randomNote(message){
                 null, function (error, bytesRead, buffer) { 
                     var data = buffer.toString("utf8"); 
                     var newArray = data.split(",");
-                    console.log(newArray);//test array make sure it works
-                    const randomNumber = Math.floor(Math.random() * newArray.length);//get a random number based on the length of the array 
-                    console.log(newArray[randomNumber])//send to channel :sunglasses: 
+                    const randomNumber = Math.floor(Math.random() * newArray.length);
                     if(newArray[randomNumber] == ""){
                         console.log(newArray[randomNumber - 1])
                         message.reply(newArray[randomNumber - 1])
                     } else {
                         message.reply(newArray[randomNumber])
                     }
-                    //client.channels.cache.get(channelTwoID).send(arrayOfIds[randomNumber])
             }); 
         });
     });
