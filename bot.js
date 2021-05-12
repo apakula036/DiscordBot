@@ -375,7 +375,7 @@ function checkTimeFunc(){
     if(date.getHours() == 17){
         client.channels.cache.get(channelTwoID).send('Welcome home from work Andrew. I hope it went well.');
     } else {
-        setTimeout(checkTimeFunc, 3600000); //one hour so it only checks once per hour triggering the function once only
+        setTimeout(checkTimeFunc, 3600000); //one hour
         console.log("Its "+ date.getHours() + ", lets check again later.")
     }
 }
@@ -405,7 +405,6 @@ function randomDog(message){
 function randomCat(message){
     axios.get("https://api.thecatapi.com/v1/images/search")
     .then((res) => {
-        //console.log('RES:', res.data[0].url)
         message.channel.send(res.data[0].url)  
     })
     .catch((err) => {
@@ -414,8 +413,6 @@ function randomCat(message){
     return " "
 }
 function makeTweets(theTweet){
-    //Not looping anything to post again, not getting banned again also PS twitter devs if youre reading this dont ban me 
-    //EDIT: it almost got banned again seperate reason though 
     T.post('statuses/update', { status: theTweet }, function(err, data, response) {
         saveTweetID(data.id_str, theTweet);
         saveTweetNoID(theTweet);
@@ -426,7 +423,6 @@ function makeTweets(theTweet){
 function saveTweetID(tweetID, theTweet){
     fs.appendFile('mynewfile1.txt', "\r\n", function (err) {
         if (err) throw err;
-        console.log('Saved!');
       });
     fs.appendFile('mynewfile1.txt', tweetID +"_"+ theTweet, function (err) {
         if (err) throw err;
@@ -435,7 +431,6 @@ function saveTweetID(tweetID, theTweet){
 }function saveTweetNoID(theTweet){
     fs.appendFile('tweetsnoids.txt', "\r\n", function (err) {
         if (err) throw err;
-        console.log('Saved!');
       });
     fs.appendFile('tweetsnoids.txt', theTweet + "_" , function (err) {
         if (err) throw err;
@@ -450,7 +445,7 @@ function readRandomTweet(){
                 null, function (error, bytesRead, buffer) { 
                     var data = buffer.toString("utf8"); 
                     var newArray = data.split("_");
-                    const randomNumber = Math.floor(Math.random() * newArray.length);//get a random number based on the length of the array  
+                    const randomNumber = Math.floor(Math.random() * newArray.length); 
                     if(newArray[randomNumber] == ""){
                         client.channels.cache.get(channelTwoID).send(newArray[randomNumber - 1])
                     } else {
