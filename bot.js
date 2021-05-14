@@ -223,6 +223,7 @@ client.on('message', message => {
     } else if (theCommand == "!givefiles"){
         giveTextFile(message);
     } else if (message.content.startsWith("!islive")){
+        message.reply("Working on it! One second...")
         scrapeTwitch(message)
     } else if (theCommand == "!affirm"){
         affirmationAPICall(message);
@@ -649,8 +650,15 @@ async function scrapeTwitch(message) {
     const live = await el.getProperty('textContent');
     const isLive = await live.jsonValue();
     console.log(isLive); //log to see if it worked 
+    if (isLive === "LIVE"){
+        console.log("True!")
+        message.reply(isLive);
+    } else {
+        console.log("False")
+        console.log(isLive)
+        message.reply("Not live :( ");
+    }
     browser.close();
-    message.reply(isLive);
 }
 function affirmationAPICall(message){
     axios.get("https://www.affirmations.dev/")
