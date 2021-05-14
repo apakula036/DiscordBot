@@ -10,6 +10,7 @@ const queue = new Map();
 //const ffmpeg = require("ffmpeg");
 const channelTwoID = process.env.GENERAL_TWOID;
 const channelOneID = process.env.GENERAL_ONEID;
+const channelRocketLeague = process.env.ROCKETCHANNEL_ID;
 const yttl = require('ytdl-core');
 const YTSearcher = require('ytsearcher');
 const prefix = "!";
@@ -104,6 +105,7 @@ client.on('ready', () => {
     client.channels.cache.get(channelTwoID).send('Im Ready!');
     //checkTimeFunc();
     //greetings();
+    autoCheckRocketLeague();
 })
 //Giant if else statement taking message from user and breaking it down to do the correct function also tests if the sender is a bot, if so, do nothing.
 client.on('message', message => {
@@ -657,6 +659,28 @@ async function scrapeTwitch(message) {
         console.log("False")
         console.log(isLive)
         message.reply("Not live :( ");
+    }
+    browser.close();
+}
+setInterval(autoCheckRocketLeague, 900000)
+
+async function autoCheckRocketLeague(){
+    const browser = await puppeteer.launch( {headless: false});
+    const page = await browser.newPage();
+    await page.goto( "https://www.twitch.tv/rocketleague");
+    const [el] = await page.$x('/html/body/div[1]/div/div[2]/div/main/div[2]/div[3]/div/div/div[1]/div[1]/div[2]/div/div[1]/div/div/div/div[1]/div/div/a/div[2]/div/div/div/div/p');
+    const live = await el.getProperty('textContent');
+    const isLive = await live.jsonValue();
+    console.log(isLive); //log to see if it worked 
+    if (isLive === "LIVE"){
+        console.log("True!")
+        message.reply("OMG ITS LIVEEEEEEEE GUYS GET IN HERE https://www.twitch.tv/rocketleague");
+        client.channels.cache.get(channelRocketLeague).send("OMG ITS LIVEEEEEEEE GUYS GET IN HERE https://www.twitch.tv/rocketleague");
+        browser.close();
+    } else {
+        console.log("False")
+        console.log(isLive)
+        browser.close();
     }
     browser.close();
 }
