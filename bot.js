@@ -408,7 +408,7 @@ function randomDog(message){
 function randomCat(message){
     axios.get("https://api.thecatapi.com/v1/images/search")
     .then((res) => {
-        message.channel.send(res.data[0].url)  
+        message.channel.send(res.data[0].url); 
     })
     .catch((err) => {
         console.error('ERR:', err)
@@ -668,7 +668,11 @@ async function autoCheckRocketLeague(){
     const page = await browser.newPage();
     await page.goto( "https://www.twitch.tv/rocketleague");
     const [el] = await page.$x('/html/body/div[1]/div/div[2]/div/main/div[2]/div[3]/div/div/div[1]/div[1]/div[2]/div/div[1]/div/div/div/div[1]/div/div/a/div[2]/div/div/div/div/p');
-    if ()// nned some check ehre to see whats wrong when it checks and its null 
+    if (el == null){
+        browser.close();
+        console.log("we have nothing to report at this time :( ")
+        return; 
+    }
     const live = await el.getProperty('textContent');
     const isLive = await live.jsonValue();
     console.log(isLive); //log to see if it worked 
