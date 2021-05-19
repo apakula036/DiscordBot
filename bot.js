@@ -675,11 +675,10 @@ async function autoCheckRocketLeague(){
     }
     const live = await el.getProperty('textContent');
     const isLive = await live.jsonValue();
-    console.log(isLive); //log to see if it worked 
+    console.log(isLive); 
     if (isLive === "LIVE"){
         console.log("True!")
-        message.reply("OMG ITS LIVEEEEEEEE GUYS GET IN HERE https://www.twitch.tv/rocketleague");
-        client.channels.cache.get(channelRocketLeague).send("OMG ITS LIVEEEEEEEE GUYS GET IN HERE https://www.twitch.tv/rocketleague");
+        client.channels.cache.get(channelRocketLeague).send("Its live! https://www.twitch.tv/rocketleague");
         browser.close();
     } else {
         console.log("False")
