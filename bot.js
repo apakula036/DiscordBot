@@ -233,7 +233,6 @@ client.on('message', message => {
         nasaPhoto(message);
     }
 });
-
 //Dad bot functionality here seperate can probably get rid of these needs test 
 client.on('message', message => {
     if ((message.content.startsWith("I'm")) || (message.content.startsWith("Im")) || (message.content.startsWith("I’m")) || (message.content.startsWith("im")) || (message.content.startsWith("i'm"))){
@@ -521,7 +520,7 @@ function saveToTextFile(theMessage){
         console.log('Saved!');
     })
 }
-function ballsCounter(){//I fixed this and I dont know why it works 
+function ballsCounter(){
     fs.readFile('ballsCounter.txt', function(err, data) {
         console.log("this is a test to see what its at " + data++)
         console.log(data)
@@ -638,8 +637,7 @@ async function scrapeThirdAndFourth(url, message){// can i condense this? need t
     const [el9] = await page.$x('//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[4]/td[3]/div/div[2]/div[1]/div');
     const txtNine = await el9.getProperty('textContent');
     const ELOThree = await txtNine.jsonValue();
-    console.log(titleThree + rankThree + titleOne + rankOne +  titleTwo + rankTwo)
-    //console.log({rank} + {rank2}); //log to make sure it works 
+    console.log(titleThree + rankThree + titleOne + rankOne +  titleTwo + rankTwo) 
     message.reply(titleThree + rankThree + " ELO:"+ ELOOne + "\n" + titleOne + rankOne + " ELO:"+ ELOTwo + "\n" + titleTwo + rankTwo + " ELO:"+ ELOThree);
     browser.close();
 }
@@ -651,7 +649,7 @@ async function scrapeTwitch(message) {
     const [el] = await page.$x('/html/body/div[1]/div/div[2]/div/main/div[2]/div[3]/div/div/div[1]/div[1]/div[2]/div/div[1]/div/div/div/div[1]/div/div/a/div[2]/div/div/div/div/p');
     const live = await el.getProperty('textContent');
     const isLive = await live.jsonValue();
-    console.log(isLive); //log to see if it worked 
+    console.log(isLive); 
     if (isLive === "LIVE"){
         console.log("True!")
         message.reply(isLive);
