@@ -117,7 +117,7 @@ client.on('message', message => {
         message.reply("Pong!"); message.react("❤️");
     } else if (message.content === "!help") {
         message.reply('I can do a bunch of things including play sounds! Here is a list of what I can do, some of these are sounds and some are not!')
-        message.reply('!playRandomSound or !prs, !islive "streamer ID here", !playShortSound or !prss, !giveFiles, !gitHubContributions, !noteThis "your note here", !milk, !taco, !mmm, !sure, !rlranks "your steam ID here", !rocketLeagueTrackerHelp, !advice, !stamos, !xgames, !wavefinger, !guitar, !tweet "Your tweet here", !readAllTweets,!randomTweet !BFGDivision, !paulGilb, !C418WetHands, !C418DryHands, !grimreaper, !rain, !ironManGuitarOnly, !senddog, !wedidit, !saveThatShit, !chunky, !eightball, !temperatureSports, !wockyBass, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !wocky, !sports, !balls, !affirm, and !ping'); message.react("👍");
+        message.reply('!playRandomSound or !prs, !githubQR, !islive "streamer ID here", !playShortSound or !prss, !giveFiles, !gitHubContributions, !noteThis "your note here", !milk, !taco, !mmm, !sure, !rlranks "your steam ID here", !rocketLeagueTrackerHelp, !advice, !stamos, !xgames, !wavefinger, !guitar, !tweet "Your tweet here", !readAllTweets,!randomTweet !BFGDivision, !paulGilb, !C418WetHands, !C418DryHands, !grimreaper, !rain, !ironManGuitarOnly, !senddog, !wedidit, !saveThatShit, !chunky, !eightball, !temperatureSports, !wockyBass, !weather "a city here", !coinFlip, !meow, !randomBetween "a number here", !wocky, !sports, !balls, !affirm, and !ping'); message.react("👍");
     } else if (theCommand === "!advice") {
         giveAdvice(message); 
     } else if (message.content.startsWith("!notethis")){
@@ -231,6 +231,8 @@ client.on('message', message => {
         affirmationAPICall(message);
     } else if (theCommand == "!nasaphoto"){
         nasaPhoto(message);
+    } else if (theCommand == "!githubqr"){
+        githubQR(message);
     }
 });
 //Dad bot functionality here seperate can probably get rid of these needs test 
@@ -705,6 +707,13 @@ function nasaPhoto(message){
         console.error('ERR:', err)
     })
     return " ";
+}
+function githubQR(message){
+    message.reply("https://github.com/apakula036", {
+        files: [
+            "qrcode.png"
+        ]
+    })
 }
 client.login(process.env.BOT_TOKEN)
 //npm run devStart
