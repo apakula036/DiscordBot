@@ -649,6 +649,11 @@ async function scrapeTwitch(message) {
     const page = await browser.newPage();
     await page.goto( "https://www.twitch.tv/" + id[1]);
     const [el] = await page.$x('/html/body/div[1]/div/div[2]/div/main/div[2]/div[3]/div/div/div[1]/div[1]/div[2]/div/div[1]/div/div/div/div[1]/div/div/a/div[2]/div/div/div/div/p');
+    if (el == null){
+        browser.close();
+        message.reply("Not live :( ")
+        return; 
+    }
     const live = await el.getProperty('textContent');
     const isLive = await live.jsonValue();
     console.log(isLive); 
@@ -714,6 +719,6 @@ function githubQR(message){
             "qrcode.png"
         ]
     })
-}
+}-
 client.login(process.env.BOT_TOKEN)
 //npm run devStart
