@@ -593,6 +593,11 @@ async function scrapeGithub(message, url){
     const page = await browser.newPage();
     await page.goto(url);
     const [el11] = await page.$x('/html/body/div[4]/main/div[2]/div/div[2]/div[2]/div/div[2]/div[1]/div/h2');
+    if (el == null){
+        browser.close();
+        message.reply("Error make sure my account is accessible?")
+        return; 
+    }
     const contra = await el11.getProperty('textContent');
     const contributions = await contra.jsonValue();
     message.reply(contributions);
