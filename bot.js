@@ -105,7 +105,7 @@ client.on('ready', () => {
     client.channels.cache.get(channelTwoID).send('Im Ready!');
     //checkTimeFunc();
     //greetings();
-    autoCheckRocketLeague();
+    //autoCheckRocketLeague();
 })
 //Giant if else statement taking message from user and breaking it down to do the correct function also tests if the sender is a bot, if so, do nothing.
 client.on('message', message => {
@@ -604,44 +604,106 @@ async function scrapeGithub(message, url){
     browser.close();
 }
 async function scrapeThirdAndFourth(url, message){// can i condense this? need to learn more here also i think i got myself blocked :) 
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-    await page.goto(url);
+    const browser = await puppeteer.launch({
+        headless: false,
+        ignoreHTTPSErrors: true
+    });
+    const page = await browser.newPage(); 
+    console.log(browser);
+    console.log(page);
+    console.log(url);
+    page.waitForTimeout(120000);
+    await page.goto(url, {waitUntil: [
+        'load',
+        'domcontentloaded',
+      ]});
+    page.waitForTimeout(120000);
+    await page.screenshot({path: 'testing.png'});
+    message.reply("Heres what I grabbed! ", {
+        files: [
+            "testing.png"
+        ]
+    });
     //2nd row title
     const [el5] = await page.$x('/html/body/div/div[2]/div[2]/div/main/div[2]/div[1]/div[2]/div[2]/div[2]/span/span');
     console.log(el5)
+    if (el5 == null){
+        browser.close();
+        message.reply("Error")
+        return; 
+    }
     const txtFive = await el5.getProperty('textContent');
     const titleThree = await txtFive.jsonValue();
     //2nd row Rank
     const [el6] = await page.$x('//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[2]/td[2]/div[2]');
+    if (el6 == null){
+        browser.close();
+        message.reply("Error")
+        return; 
+    }
     const txtSix = await el6.getProperty('textContent');
     const rankThree = await txtSix.jsonValue();
     //2nd row ELO 
     const [el7] = await page.$x('//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[2]/td[3]/div/div[2]/div[1]/div');
+    if (el7 == null){
+        browser.close();
+        message.reply("Error")
+        return; 
+    }
     const txtSeven = await el7.getProperty('textContent');
     const ELOOne = await txtSeven.jsonValue();
     //3rd row title
     const [el1] = await page.$x("/html/body/div/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[3]/td[2]/div[1]/text()");
+    if (el1 == null){
+        browser.close();
+        message.reply("Error")
+        return; 
+    }
     const txtOne = await el1.getProperty('textContent');
     const titleOne = await txtOne.jsonValue();
     //3rd row rank 
     const [el2] = await page.$x('//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[3]/td[2]/div[2]');
+    if (el2 == null){
+        browser.close();
+        message.reply("Error")
+        return; 
+    }
     const txtTwo = await el2.getProperty('textContent');
     const rankOne = await txtTwo.jsonValue();
     //3rd row ELO 
     const [el8] = await page.$x('//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[3]/td[3]/div/div[2]/div[1]/div');
+    if (el8 == null){
+        browser.close();
+        message.reply("Error")
+        return; 
+    }
     const txtEight = await el8.getProperty('textContent');
     const ELOTwo = await txtEight.jsonValue();
     //4th row title
     const [el3] = await page.$x('//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[4]/td[2]/div[1]/text()');
+    if (el3 == null){
+        browser.close();
+        message.reply("Error")
+        return; 
+    }
     const txtThree = await el3.getProperty('textContent');
     const titleTwo = await txtThree.jsonValue();
     //4th row rank 
     const [el4] = await page.$x('//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[4]/td[2]/div[2]');
+    if (el4 == null){
+        browser.close();
+        message.reply("Error")
+        return; 
+    }
     const txtFour = await el4.getProperty('textContent');
     const rankTwo = await txtFour.jsonValue();
     //4th row ELO 
     const [el9] = await page.$x('//*[@id="app"]/div[2]/div[2]/div/main/div[2]/div[3]/div[1]/div/div/div[1]/div[2]/table/tbody/tr[4]/td[3]/div/div[2]/div[1]/div');
+    if (el9 == null){
+        browser.close();
+        message.reply("Error")
+        return; 
+    }
     const txtNine = await el9.getProperty('textContent');
     const ELOThree = await txtNine.jsonValue();
     console.log(titleThree + rankThree + titleOne + rankOne +  titleTwo + rankTwo) 
