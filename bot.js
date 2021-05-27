@@ -618,7 +618,7 @@ async function scrapeThirdAndFourth(url, message){// can i condense this? need t
         'domcontentloaded',
       ]});
     page.waitForTimeout(120000);
-    await page.screenshot({path: 'testing.png'});
+    await page.screenshot({path: 'testing.png'});//auto delete this after sending 
     message.reply("Heres what I grabbed! ", {
         files: [
             "testing.png"
