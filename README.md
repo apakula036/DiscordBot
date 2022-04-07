@@ -1,5 +1,5 @@
 # DiscordBot
-Discord Bot that has a lot of functionality including reading other websites APIs like Twitter's to easily make tweets with just Discord. Uses Axios for the API calls and the Discord.js node module to interact with Discord. 
+Discord Bot that has a lot of functionality including reading other websites APIs to do things like send random pictures of dogs, random pictures of cats, taco recipes, and information from NASA. The bot can send and read tweets from Twitter, roll an eight ball, and flip a coin. The bot can create, write, update, and read text files. The bot can read the weather of a specific city the user enters. The bot can play music and sounds through FFMPEG. It also uses Puppeteer to scrape GitHub and the Rocket League website and grab things like my daily contributions of code or a players current rank in a gamemode. It can also find out if a specific Twitch.Tv channel is live. The bot uses Axios for the API calls and the Discord.js node module to interact with Discord.
 
 Intro:
 Use the !help for all of the commands the bot can do! 
@@ -16,3 +16,4 @@ Use the !help for all of the commands the bot can do!
 !prs: Plays a random sound from the list of selected sounds available. 
 !advice: Using an API request gives advice to the user. 
 !eightball: Ask a yes or no question and the eight ball will respond. 
+!githubqr
