@@ -16,4 +16,4 @@ Use the !help for all of the commands the bot can do!
 !prs: Plays a random sound from the list of selected sounds available. 
 !advice: Using an API request gives advice to the user. 
 !eightball: Ask a yes or no question and the eight ball will respond. 
-!githubqr
+!githubqr: Sends a picture of my GitHub profile to the text. 
