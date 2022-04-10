@@ -17,3 +17,6 @@ Use the !help for all of the commands the bot can do!
 !advice: Using an API request gives advice to the user. 
 !eightball: Ask a yes or no question and the eight ball will respond. 
 !githubqr: Sends a picture of my GitHub profile to the text. 
+!help: Brings up the options that the bot can do in chat.
+!ping: Will send "Pong" in chat as a reply to the user. 
+!advice: Will send the user advice in chat reading a websites API to grab random advice. 
