@@ -21,3 +21,4 @@ Use the !help for all of the commands the bot can do!
 !ping: Will send "Pong" in chat as a reply to the user. 
 !advice: Will send the user advice in chat reading a websites API to grab random advice. 
 !nasaphoto: Sends the NASA photo of the day to the chat. 
+!readalltweets: Reads all the tweets this bot has made and sent to Twitter and sends them to chat. 
