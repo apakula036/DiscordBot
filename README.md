@@ -1,7 +1,12 @@
-# DiscordBot
-Discord Bot that has a lot of functionality including reading other websites APIs to do things like send random pictures of dogs, random pictures of cats, taco recipes, and information from NASA. The bot can send and read tweets from Twitter, roll an eight ball, and flip a coin. The bot can create, write, update, and read text files. The bot can read the weather of a specific city the user enters. The bot can play music and sounds through FFMPEG. It also uses Puppeteer to scrape GitHub and the Rocket League website and grab things like my daily contributions of code or a players current rank in a gamemode. It can also find out if a specific Twitch.Tv channel is live. The bot uses Axios for the API calls and the Discord.js node module to interact with Discord.
+#description Discord Bot that has a lot of functionality including making  API calls to do things like send random pictures of dogs, random pictures of cats, taco recipes, and information from NASA. The bot uses Axios for the API calls and the Discord.js node module to interact with Discord.
 
-Intro:
+#instructions
+Detailed write up coming soon. 
+
+#future-plans 
+I would like to add many more features including my Python slot machine game to this bot.
+
+#available-commands
 Use the !help for all of the commands the bot can do! 
 
 !tweet: Writes a tweet using the Twitter API and Discord API to the bots twitter page. 
