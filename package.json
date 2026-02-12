@@ -11,14 +11,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@discordjs/opus": "^0.8.0",
-    "axios": "^0.21.1",
+    "@discordjs/opus": "^0.10.0",
+    "axios": "^1.13.5",
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
     "ffmpeg-static": "^4.2.7",
     "jquery": "^3.5.1",
+    "node-fetch": "^3.3.2",
     "puppeteer": "^8.0.0",
-    "twit": "^2.2.11",
+    "twit": "^1.1.20",
     "ytdl-core": "^4.5.0",
     "ytsearcher": "^1.2.3"
   },

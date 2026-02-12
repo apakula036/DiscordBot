@@ -11,10 +11,12 @@ const queue = new Map();
 const channelTwoID = process.env.GENERAL_TWOID;
 const channelOneID = process.env.GENERAL_ONEID;
 const channelRocketLeague = process.env.ROCKETCHANNEL_ID;
+const weatherAPPKey = process.env.API_TOKEN_KEY;
 const yttl = require('ytdl-core');
 const YTSearcher = require('ytsearcher');
 const prefix = "!";
 //Twitter API Stuff
+/** Twitter stuff turned off 2/11/2025 for repair 
 var Twit = require('twit');
 const { title } = require("process");
 var T = new Twit({
@@ -23,6 +25,7 @@ var T = new Twit({
   access_token:         process.env.ACCESS_TOKENAPI,
   access_token_secret:  process.env.ACCESS_TOKENAPI_SECRET,
 })
+  */
 //Arrays 
 const eightBallArray = [
     "As I see it, yes.",
@@ -102,7 +105,8 @@ const shortSoundArray = [
 var i;
 //Start bot and run these functions
 client.on('ready', () => {
-    client.channels.cache.get(channelTwoID).send('Im Ready!');
+    //client.channels.cache.get(channelTwoID).send('Im Ready!');
+    console.log("im ready")
     //checkTimeFunc();
     //greetings();
     //autoCheckRocketLeague();
@@ -197,8 +201,8 @@ client.on('message', message => {
         eightBall(message)
     } else if (theCommand === "!meow") {
         message.channel.send("meow" + randomCat(message))
-    } else if(theCommand === "!taco") {
-        message.reply(getTaco())
+    } else if(theCommand === "!getcat") {
+        message.reply(getCat())
     } else if (theCommand === "!senddog") {
         message.channel.send("Doggo" + randomDog(message))
     } else if (message.content.startsWith("!randombetween")){
@@ -233,6 +237,8 @@ client.on('message', message => {
         nasaPhoto(message);
     } else if (theCommand == "!githubqr"){
         githubQR(message);
+    } else if (message.content.startsWith("!getPokemon")){
+        getPokemon(message)
     }
 });
 //Dad bot functionality here seperate can probably get rid of these needs test 
@@ -282,7 +288,7 @@ function dadBot(message){
         return;
 }
 function temperatureSports(message){
-    axios.get("http://api.openweathermap.org/data/2.5/weather?q=lockport,us&units=imperial&APPID=" + process.env.API_TOKEN_KEY)
+    axios.get("http://api.openweathermap.org/data/2.5/weather?q=lockport,us&units=imperial&APPID=" + weatherAPPKey)
         .then((res) => {  
             if(res.data.main.temp <= 45){
                 message.reply("The temperature outside is: " + res.data.main.temp + ", its pretty cold out I would stay in today and play some games");
@@ -325,7 +331,7 @@ function giveTextFile(message){
     })
 };
 function weatherSports(message){
-    axios.get("http://api.openweathermap.org/data/2.5/weather?q=lockport,us&units=imperial&APPID=" + process.env.API_TOKEN_KEY)
+    axios.get("http://api.openweathermap.org/data/2.5/weather?q=lockport,us&units=imperial&APPID=" + weatherAPPKey)
     .then((res) => {  
         if(res.data.wind.speed <= 3){
             message.reply("The wind today is almost nonexistant go outside! The temperature is " + res.data.main.temp + " degrees. The real feel is "
@@ -356,7 +362,7 @@ function giveWeather(message){//add the error log
     const args = message.content.slice().trim().split(/ +/g);
     const theCommand = args.shift().toLowerCase();
     const city = args[0];
-    axios.get("http://api.openweathermap.org/data/2.5/weather?q=" + city + ",us&units=imperial&APPID=" + process.env.API_TOKEN_KEY)
+    axios.get("http://api.openweathermap.org/data/2.5/weather?q=" + city + ",us&units=imperial&APPID=" + weatherAPPKey)
     .then((res) => { 
         message.reply("The temperature is " + res.data.main.temp + " degrees. The real feel is " + res.data.main.feels_like + " degrees. The wind speed is " + res.data.wind.speed + "mph. The sky is " + res.data.weather[0].main.toLowerCase()+". Please, have a nice day.");   
     })
@@ -550,16 +556,51 @@ function giveAdvice(message){
     })
     return " ";
 }
-function getTaco(){
-    axios.get("http://taco-randomizer.herokuapp.com/random/?full-taco=true")
+function getCat(){
+    axios.get("https://cat-fact.herokuapp.com")
     .then((res) => {
-        console.log('RES:', res.data.base_layer.recipe)
-        client.channels.cache.get(channelTwoID).send(res.data.base_layer.recipe)
+        console.log('RES:', res.text)
+        client.channels.cache.get(channelTwoID).send(res.text)
     })
     .catch((err) => {
         console.error('ERR:', err)
     })
     return " ";
+}
+function getCatFetch(){
+    axios.get("https://cat-fact.herokuapp.com")
+        .then(response => console.log(response))
+        .catch(error => console.error(error) )
+}
+function getPokemon(message){
+    //console.log(message);
+    const args = message.content.slice().trim().split(/ +/g);
+    const theCommand = args.shift().toLowerCase();
+    const pokemonNameOrID = args[0];
+    axios.get("https://pokeapi.co/api/v2/pokemon/" + pokemonNameOrID)
+        //.then(response => console.log(response))
+        //.then(response => console.log("Pokemon Name: " + response.data.name) + 
+        //    console.log(response.data.sprites.back_default) + 
+        //    console.log("Pokemon ID: " + response.data.id)
+        //console.log(response.data.name),
+            //pokemonName = response.data.name,
+            //pokemonName.charAt(0).toUpperCase() + string.slice(1),
+            //client.channels.cache.get(channelTwoID).send(
+            //pokemonName
+            //+ " \n"
+        .then(response => client.channels.cache.get(channelTwoID).send(
+            response.data.name 
+            + " \n"
+            + response.data.sprites.front_default 
+            + " \n"
+            + "ID: " + response.data.id
+            + " \n"
+            + "Height: " + response.data.height
+            + " \n"
+            + "Weight: " + response.data.weight
+            ) 
+        )
+        .catch(error => console.error(error) )
 }
 function getReadyToSaveToTextFile(message){
     const args = message.content.slice().trim().split(/ +/g);
@@ -734,6 +775,7 @@ async function scrapeTwitch(message) {
     }
     browser.close();
 }
+/* Turned off 2/11/2025
 setInterval(autoCheckRocketLeague, 900000)
 async function autoCheckRocketLeague(){
     const browser = await puppeteer.launch( {headless: false});
@@ -758,7 +800,8 @@ async function autoCheckRocketLeague(){
         browser.close();
     }
     browser.close();
-}
+} 
+    */
 function affirmationAPICall(message){
     axios.get("https://www.affirmations.dev/")
     .then((res) => {
