@@ -1,7 +1,20 @@
 #description Discord Bot that has a lot of functionality including making  API calls to do things like send random pictures of dogs, random pictures of cats, taco recipes, and information from NASA. The bot uses Axios for the API calls and the Discord.js node module to interact with Discord.
 
 #instructions
-Detailed write up coming soon. 
+1. Clone the code repo to your machine(or vm).
+2. Install/verify that you have nodejs https://nodejs.org/en or node -v.
+3. Navigate to the folder that the project is in in a terminal session "cd \DiscordBot\".
+4. Use the code "npm install" to install dependencies.
+5. Create a .env file in the main directory.
+6. Create these empty text files in the main directory: newFile2.txt ballsCounter.txt newFile2.txt testfile.txt tweetsnoids.txt notes.txt mynewfile1.txt.
+7. Login to the Discord Developer Portal and create a discord app, once created, copy the Application key and paste it into the .env file with the syntax BOT_TOKEN=""
+8. Install the bot into your targeted server, this site will guide through that https://discord.com/developers/applications/select/installation.
+9. In your targeted server that you want the bot to be in, copy 3 channel IDs and insert them into the .env file. The format should be the same as before like this: ROCKETCHANNEL_ID="" GENERAL_ONEID="" GENERAL_TWOID="".
+10. Create a new API key for the NASA API and add it to the .env file with NASA_APIKEY
+11. Create a new API key set for Twitter and add them to the .env file following the same format as before and name them: CONSUMER_KEYAPI, CONSUMER_KEYAPI_SECRET, ACCESS_TOKENAPI, ACCESS_TOKENAPI_SECRE.
+12. Create a new API key for the Weather App following the same format as before and name it API_TOKEN_KEY. 
+13. Run the bot.js file with nodejs with this code: "node bot.js".
+15. For a list of what the bot can do, scroll down to the available commands section. 
 
 #future-plans 
 I would like to add many more features including my Python slot machine game to this bot.
